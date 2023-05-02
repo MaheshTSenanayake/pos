@@ -1,9 +1,12 @@
-
+import { Route, Routes } from "react-router-dom";
+import Home from "./Components/Pages/Home";
 
 function App() {
   return (
     <div>
-      Welcome to Pos
+      <Routes>
+        <Route exact path="/" element={<Home />}></Route>
+      </Routes>
     </div>
   );
 }
