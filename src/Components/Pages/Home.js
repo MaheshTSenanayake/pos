@@ -1,10 +1,10 @@
-import Layout from "../Layout/Layout";
+import ThreeColumnLayout from "../Layout/ThreeColumnLayout";
 
 function Home() {
   return (
-    <Layout>
-      <div>Welcome to pos Home</div>
-    </Layout>
+    <div>
+      <ThreeColumnLayout />
+    </div>
   );
 }
 
