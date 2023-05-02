@@ -1,0 +1,62 @@
+{
+  "category": [
+    { "_id": "c1", "title": "Soft Drink" },
+    { "_id": "c2", "title": "Biscuit" },
+    { "_id": "c3", "title": "Stationery" },
+    { "_id": "c4", "title": "Fruit" },
+    { "_id": "c5", "title": "Meat" },
+    { "_id": "c5", "title": "Bread & Bakery" },
+    { "_id": "c4", "title": "Health" }
+  ],
+  "items": [
+    {
+      "_id": "i1",
+      "title": "Fanta",
+      "price": 300,
+      "category": "Soft Drink",
+      "image": "../../image.jpeg"
+    },
+    {
+      "_id": "i2",
+      "title": "Coca Cola",
+      "price": 285,
+      "category": "Soft Drink",
+      "image": "../../image.jpeg"
+    },
+    {
+      "_id": "i3",
+      "title": "Note Book",
+      "price": 150,
+      "category": "Stationery",
+      "image": "../../image.jpeg"
+    },
+    {
+      "_id": "i4",
+      "title": "Pen",
+      "price": 30,
+      "category": "Stationery",
+      "image": "../../image.jpeg"
+    },
+    {
+      "_id": "i5",
+      "title": "Banana",
+      "price": 100,
+      "category": "Fruit",
+      "image": "../../image.jpeg"
+    },
+    {
+      "_id": "i6",
+      "title": "Mango",
+      "price": 50,
+      "category": "Fruit",
+      "image": "../../image.jpeg"
+    },
+    {
+      "_id": "i7",
+      "title": "Apple",
+      "price": 50,
+      "category": "Fruit",
+      "image": "../../image.jpeg"
+    }
+  ]
+}
