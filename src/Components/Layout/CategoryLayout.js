@@ -1,17 +1,41 @@
-import { Grid } from "@mui/material";
+import styled from "@emotion/styled";
+import { Button, Grid } from "@mui/material";
 
 const data = require("../../data.json");
-console.log(data.category[0].title);
+
+const useStyle = styled((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+}));
 
 function CategoryLayout() {
+  const classes = useStyle();
   return (
-    <Grid container spacing={3}>
-      {data.category.map((category, index) => (
-        <Grid key={category._id} item xs={12}>
-          <h6>{category.title}</h6>
-        </Grid>
-      ))}
-    </Grid>
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        {data.category.map((category, index) => (
+          <Grid key={category._id} item xs={12}>
+            <Button
+              sx={{
+                bgcolor: "#10BADF",
+                marginTop: 1,
+                borderRadius: 1,
+                width: { xs: 180, sm: 100, md: 150 },
+              }}
+              variant="contained"
+            >
+              {category.title}
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
   );
 }
 
