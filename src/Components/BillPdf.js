@@ -90,8 +90,9 @@ function BillPdf(props) {
   };
 
   return (
-    <div componentRef={componentRef}>
-
+    <div>
+    
+    <div ref={componentRef}>
     <Container container spacing={3}>
       <Grid item xs={12}>
         <Title>Invoice</Title>
@@ -141,10 +142,11 @@ function BillPdf(props) {
           </tbody>
         </Table>
       </Grid>
-      <Grid item xs={12}>
+    </Container>
+    </div>
+    <Grid item xs={12}>
         <Button onClick={handlePrint}>Print</Button>
       </Grid>
-    </Container>
     </div>
   );
 }
