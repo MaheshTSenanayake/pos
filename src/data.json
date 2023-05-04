@@ -14,14 +14,14 @@
       "title": "Fanta",
       "price": 300,
       "category": "Soft Drink",
-      "image": "http://localhost:3000/public/image/image.jpeg"
+      "image": "./image/image.jpeg"
     },
     {
       "_id": "i2",
       "title": "Coca Cola",
       "price": 285,
       "category": "Soft Drink",
-      "image": "../../image.jpeg"
+      "image": "../public/image/image.jpeg"
     },
     {
       "_id": "i3",

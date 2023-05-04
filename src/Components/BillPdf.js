@@ -94,7 +94,7 @@ function BillPdf(props) {
     
     <div ref={componentRef}>
     <Container container spacing={3}>
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{textAlign:'center'}}>
         <Title>Invoice</Title>
       </Grid>
       <Grid item xs={12} md={6}>
