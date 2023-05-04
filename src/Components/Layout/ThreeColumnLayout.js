@@ -5,8 +5,8 @@ import ItemLayout from "./ItemLayout";
 
 function ThreeColumnLayout() {
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={3} sx={{ margin: "16px" }}>
+    <Grid container>
+      <Grid item xs={3}>
         <CartLayout />
       </Grid>
       <Grid item xs={1} sx={{ margin: "16px" }}>
