@@ -3,7 +3,8 @@ import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../action/cartAction";
-
+import { Card, CardMedia, CardContent } from "@mui/material";
+import MediaCard from "./MediaCard";
 const data = require("../../data.json");
 
 const useStyle = styled((theme) => ({
@@ -51,17 +52,15 @@ function ItemLayout() {
       {
         <Grid container spacing={3}>
           {data.items.map((item) => (
-            <Grid item xs={12} sm={6} md={2} key={item.title}>
-              <div
-                className={classes.paper}
-                style={{ backgroundColor: "#f6fafb" }}
-                onClick={() => handleItemClick(item)}
-              >
-                <img src={item.image} alt={item.title} />
-                <h2>{item.title}</h2>
-              </div>
-            </Grid>
-          ))}
+  <Grid item xs={12} sm={6} md={4} key={item.title}>
+    <MediaCard
+  title={item.title}
+  image={item.image}
+/>
+
+  </Grid>
+))}
+
         </Grid>
       }
       {
