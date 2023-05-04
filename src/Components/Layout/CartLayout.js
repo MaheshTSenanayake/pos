@@ -1,7 +1,9 @@
 import { Button, Grid } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useSelector } from "react-redux";
 
 function CartLayout() {
+  const state = useSelector((state) => state);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -26,7 +28,11 @@ function CartLayout() {
         </Grid>
       </Grid>
       <Grid item xs={12} sx={{ height: "500px" }}>
-        <h4>Oder Items</h4>
+        {state.items.map((items, index) => (
+          <Grid key={items._id} item xs={12}>
+            <h4>{items.title}</h4>
+          </Grid>
+        ))}
       </Grid>
       <Grid item xs={12}>
         <h4>Discount</h4>
