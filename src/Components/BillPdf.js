@@ -6,33 +6,64 @@ import { useReactToPrint } from "react-to-print";
 import { Button } from "@mui/base";
 import { Grid } from "@mui/material";
 
-const useStyles = styled((theme) => ({
-  root: {
-    fontFamily: "Arial, sans-serif",
-    fontSize: 14,
-    lineHeight: "1.5",
-    color: "#333",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  table: {
-    borderCollapse: "collapse",
-    width: "100%",
-  },
-  th: {
-    borderBottom: "2px solid #333",
-    textAlign: "left",
-    padding: "10px 5px",
-  },
-  td: {
-    borderBottom: "1px solid #333",
-    textAlign: "left",
-    padding: "5px",
-  },
-}));
+const Container = styled(Grid)({
+  fontFamily: "Arial, sans-serif",
+  fontSize: 14,
+  lineHeight: "1.5",
+  color: "#333",
+});
+
+const Title = styled.h1({
+  fontSize: 24,
+  fontWeight: "bold",
+  margin: "0 0 10px 0",
+});
+
+const SubTitle = styled.div({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+
+const SubTitleItem = styled.div({
+  flexBasis: "50%",
+});
+
+const Table = styled.table({
+  borderCollapse: "collapse",
+  width: "100%",
+});
+
+const TableHeader = styled.th({
+  borderBottom: "2px solid #333",
+  textAlign: "left",
+  padding: "10px 5px",
+});
+
+const TableData = styled.td({
+  borderBottom: "1px solid #333",
+  textAlign: "left",
+  padding: "5px",
+});
+
+const TotalRow = styled.tr({
+  borderTop: "2px solid #333",
+  textAlign: "right",
+});
+
+const TotalLabel = styled.td({
+  fontWeight: "bold",
+  paddingTop: 10,
+  paddingRight: 5,
+  textAlign: "right",
+});
+
+const TotalValue = styled.td({
+  fontWeight: "bold",
+  paddingTop: 10,
+  paddingLeft: 5,
+  textAlign: "right",
+});
 
 function BillPdf(props) {
   const state = useSelector((state) => state);
@@ -46,6 +77,7 @@ function BillPdf(props) {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  
   const invoiceData = {
     id: "INV-1234",
     date: "May 4, 2023",
@@ -57,62 +89,62 @@ function BillPdf(props) {
     total: 40.0,
   };
 
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      <div ref={componentRef}>
-        <Grid container spacing={3} style={{ textAlign: "center" }}>
-          <Grid item xs={12}>
-            <h1>Invoice</h1>
-          </Grid>
-          <Grid item xs={6}>
-            <p>Invoice ID: {invoiceData.id}</p>
-          </Grid>
-          <Grid item xs={6}>
-            <p>Invoice Date: {invoiceData.date}</p>
-          </Grid>
-          <Grid item xs={12}>
-            <p>Customer Name: {invoiceData.customerName}</p>
-          </Grid>
-          <Grid item xs={12}>
-            <table>
-              <thead>
-                <tr>
-                  <th>Item ID</th>
-                  <th>Item Name</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoiceData.items.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.price}</td>
-                    <td>{item.quantity * item.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan="4" align="right">
-                    Total:
-                  </td>
-                  <td>{invoiceData.total}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </Grid>
-        </Grid>
-      </div>
+    <div componentRef={componentRef}>
 
-      <div>
-        <Button onClick={handlePrint}>Print </Button>
-      </div>
+    <Container container spacing={3}>
+      <Grid item xs={12}>
+        <Title>Invoice</Title>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <SubTitle>
+          <SubTitleItem>
+            <strong>Invoice ID:</strong> {invoiceData.id}
+          </SubTitleItem>
+          <SubTitleItem>
+            <strong>Invoice Date:</strong> {invoiceData.date}
+          </SubTitleItem>
+        </SubTitle>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <SubTitle>
+          <SubTitleItem>
+            <strong>Customer Name:</strong> {invoiceData.customerName}
+          </SubTitleItem>
+        </SubTitle>
+      </Grid>
+      <Grid item xs={12}>
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>Item ID</TableHeader>
+              <TableHeader>Item Name</TableHeader>
+              <TableHeader>Quantity</TableHeader>
+              <TableHeader>Price</TableHeader>
+              <TableHeader>Total</TableHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {invoiceData.items.map((item) => (
+              <tr key={item.id}>
+                <TableData>{item.id}</TableData>
+                <TableData>{item.name}</TableData>
+                <TableData>{item.quantity}</TableData>
+                <TableData>{item.price}</TableData>
+                <TableData>{item.quantity * item.price}</TableData>
+              </tr>
+            ))}
+            <TotalRow>
+              <TotalLabel colSpan="4">Total</TotalLabel>
+              <TotalValue>{invoiceData.total}</TotalValue>
+            </TotalRow>
+          </tbody>
+        </Table>
+      </Grid>
+      <Grid item xs={12}>
+        <Button onClick={handlePrint}>Print</Button>
+      </Grid>
+    </Container>
     </div>
   );
 }
