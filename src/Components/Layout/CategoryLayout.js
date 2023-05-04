@@ -18,7 +18,7 @@ function CategoryLayout() {
   const classes = useStyle();
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center">
         {data.category.map((category, index) => (
           <Grid key={category._id} item xs={12}>
             <Button
