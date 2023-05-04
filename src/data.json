@@ -5,8 +5,8 @@
     { "_id": "c3", "title": "Stationery" },
     { "_id": "c4", "title": "Fruit" },
     { "_id": "c5", "title": "Meat" },
-    { "_id": "c5", "title": "Bread & Bakery" },
-    { "_id": "c4", "title": "Health" }
+    { "_id": "c6", "title": "Bread & Bakery" },
+    { "_id": "c7", "title": "Health" }
   ],
   "items": [
     {
