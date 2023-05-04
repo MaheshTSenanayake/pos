@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from "./types";
+import { ADD_TO_CART, PRINT_BILL, REMOVE_FROM_CART } from "./types";
 
 const addItem = (cartItems) => {
   return {
@@ -12,4 +12,10 @@ const deleteItem = () => {
   };
 };
 
-export { addItem, deleteItem };
+const printBill = () => {
+  return {
+    type: PRINT_BILL,
+  };
+};
+
+export { addItem, deleteItem, printBill };

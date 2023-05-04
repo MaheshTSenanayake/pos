@@ -2,9 +2,9 @@ import MainNevigation from "./MainNevigation";
 
 function Layout(props) {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <MainNevigation />
-      <main>{props.children}</main>
+      <main style={{ flex: 1 }}>{props.children}</main>
     </div>
   );
 }
