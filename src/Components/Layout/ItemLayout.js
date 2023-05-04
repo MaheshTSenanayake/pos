@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
-import { Button, Grid, Modal, Typography } from "@mui/material";
+import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../action/cartAction";
 
 const data = require("../../data.json");
 
@@ -18,8 +20,10 @@ const useStyle = styled((theme) => ({
 function ItemLayout() {
   const classes = useStyle();
   const [open, setOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [value, setValue] = useState("");
+  const [selectedItem, setSelectedItem] = useState({});
+  const [quantity, setquantity] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleItemClick = (item) => {
     setOpen(true);
@@ -28,9 +32,19 @@ function ItemLayout() {
 
   const handleClose = () => {
     setOpen(false);
+    setquantity("");
   };
 
- 
+  const handleChange = (event) => {
+    setquantity(event.target.value);
+  };
+
+  const handleAddToCart = () => {
+    const cartValue = { ...selectedItem, quantity };
+    setOpen(false);
+    setquantity("");
+    dispatch(addItem(cartValue));
+  };
 
   return (
     <div className={classes.root}>
@@ -71,10 +85,16 @@ function ItemLayout() {
               {selectedItem.title}
             </Typography>
             <img src={selectedItem.image} alt={selectedItem.title} />
-           
+            <TextField
+              label="Enter Quantity"
+              variant="outlined"
+              value={quantity}
+              onChange={handleChange}
+              margin="normal"
+            />
             <Grid container spacing={2}>
               <Grid item xs={5}>
-                <Button variant="contained" onClick={handleClose}>
+                <Button variant="contained" onClick={handleAddToCart}>
                   To Cart
                 </Button>
               </Grid>
