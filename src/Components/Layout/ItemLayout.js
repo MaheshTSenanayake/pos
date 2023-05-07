@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
-import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addItem } from "../../action/cartAction";
-import { Card, CardMedia, CardContent } from "@mui/material";
+import { Grid } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItem,
+  calculateTotal,
+  updateQuantity,
+} from "../../action/cartAction";
 import MediaCard from "./MediaCard";
 const data = require("../../data.json");
 
@@ -19,93 +21,46 @@ const useStyle = styled((theme) => ({
 }));
 
 function ItemLayout() {
+  const state = useSelector((state) => state);
   const classes = useStyle();
-  const [open, setOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
-  const [quantity, setquantity] = useState("");
-
   const dispatch = useDispatch();
 
-  const handleItemClick = (item) => {
-    setOpen(true);
-    setSelectedItem(item);
-  };
+  const height = window.innerHeight;
 
-  const handleClose = () => {
-    setOpen(false);
-    setquantity("");
-  };
-
-  const handleChange = (event) => {
-    setquantity(event.target.value);
-  };
-
-  const handleAddToCart = () => {
-    const cartValue = { ...selectedItem, quantity };
-    setOpen(false);
-    setquantity("");
-    dispatch(addItem(cartValue));
+  const handleAddToCart = (item) => {
+    if (state.cartItems.some((cartItem) => cartItem._id === item._id)) {
+      const selectedCartItem = state.cartItems.find(
+        (cartItem) => cartItem._id === item._id
+      );
+      const newQuantity = selectedCartItem.quantity + 1;
+      const updateQuantityData = { id: item._id, newValue: newQuantity };
+      dispatch(updateQuantity(updateQuantityData));
+      dispatch(calculateTotal());
+    } else {
+      item.quantity = 1;
+      dispatch(addItem(item));
+      dispatch(calculateTotal());
+    }
   };
 
   return (
     <div className={classes.root}>
-      {
-        <Grid container spacing={3}>
-          {data.items.map((item) => (
-  <Grid item xs={12} sm={6} md={4} key={item.title}>
-    <MediaCard
-  title={item.title}
-  image={item.image}
-/>
-
-  </Grid>
-))}
-
-        </Grid>
-      }
-      {
-        <Modal open={open} onClose={handleClose}>
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              width: "500px",
-              height: "400px",
-              padding: "20px",
-              borderRadius: "5px",
-              outline: "none",
-              textAlign: "center",
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              {selectedItem.title}
-            </Typography>
-            <img src={selectedItem.image} alt={selectedItem.title} />
-            <TextField
-              label="Enter Quantity"
-              variant="outlined"
-              value={quantity}
-              onChange={handleChange}
-              margin="normal"
-            />
-            <Grid container spacing={2}>
-              <Grid item xs={5}>
-                <Button variant="contained" onClick={handleAddToCart}>
-                  To Cart
-                </Button>
-              </Grid>
-              <Grid item xs={5}>
-                <Button variant="contained" onClick={handleClose}>
-                  Close
-                </Button>
-              </Grid>
-            </Grid>
-          </div>
-        </Modal>
-      }
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          marginTop: "0px",
+          padding: "10px",
+          maxHeight: `${height}px`,
+          overflow: "auto",
+        }}
+      >
+        {data.items.map((item) => (
+          <Grid item xs={12} sm={6} md={2} key={item._id}>
+            <MediaCard item={item} handleAddToCart={handleAddToCart} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }

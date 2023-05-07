@@ -1,4 +1,4 @@
-import ThreeColumnLayout from "../Layout/ThreeColumnLayout";
+import ThreeColumnLayout from "../Components/Layout/ThreeColumnLayout";
 
 function Home() {
   return (
