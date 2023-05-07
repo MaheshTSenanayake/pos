@@ -1,281 +1,109 @@
-import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import * as React from "react";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useSelector } from "react-redux";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { useState } from "react";
-import BillPDF from "../BillPdf";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import QuantityTextField from "../QuantityTextField";
+import {
+  calculateTotal,
+  clearCart,
+  deleteItem,
+  updateQuantity,
+} from "../../action/cartAction";
+import { Button, Grid, Typography } from "@mui/material";
+import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 
 function CartLayout() {
+  const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [open, setOpen] = useState(false);
-  const [amountReceived, setAmountReceived] = useState("");
-  const [balance, setBalance] = useState("");
-  const [showBalance, setShowBalance] = useState(false);
-  const [pdfView, setPdfView] = useState(false);
 
-  const handlePayment = () => {
-    setOpen(true);
+  const handleChangeQuantity = (quantity) => {
+    let value = isNaN(quantity.newValue) ? 0 : quantity.newValue;
+    const updateQuantityData = { id: quantity.id, newValue: value };
+    dispatch(updateQuantity(updateQuantityData));
+    dispatch(calculateTotal());
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleClearCart = () => {
+    dispatch(clearCart());
+    dispatch(calculateTotal());
   };
-  const handleChange = (event) => {
-    setAmountReceived(event.target.value);
-  };
-  const calculateBalance = () => {
-    setBalance(amountReceived - state.total);
-    setShowBalance(true);
-  };
-  const billPdf = () => {
-    setOpen(false);
-    setPdfView(true);
-  };
-  const handlePdfClose = () => {
-    setPdfView(false);
+  const handleRemoveItemFromCart = (id) => {
+    dispatch(deleteItem(id));
+    dispatch(calculateTotal());
   };
 
   return (
-    <div>
-      {
-        <Grid container>
-          <Grid item xs={12}>
-            <Grid
-              container
-              sx={{ padding: 2 }}
-              bgcolor="#e9e9e9"
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography variant="p">Order:</Typography>
-              </Grid>
-              <Grid item xs>
-                <TextField
-                  size="small"
-                  sx={{ width: "100px" }}
-                  variant="outlined"
-                  margin="normal"
-                  value={state.orderNumber}
-                />
-              </Grid>
-              <Grid item container justifyContent="flex-end" xs={6}>
-                <Button
-                  sx={{
-                    textAlign: "center",
-                    bgcolor: "#f35151",
-                    borderRadius: 1,
-                    width: { xs: 180, sm: 100, md: 150 },
-                  }}
-                  variant="contained"
-                  startIcon={<ClearIcon />}
-                >
-                  Clear
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ padding: "10px", height: "500px", overflow: "auto" }}
-          >
-            <Grid container sx={{ padding: 2 }} bgcolor="#e9e9e9">
-              <Grid item xs={6}>
-                <Typography variant="body1">Item</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={6}
-                container
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Typography variant="body1">Quantity</Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="body1">Price</Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-
-            {state.items.map((items, index) => (
-              <Grid
-                key={items._id}
-                item
-                xs={12}
-                bgcolor="#dbffff"
-                sx={{ height: "50px" }}
-                container
-                alignItems="center"
-                paddingLeft="10px"
-                paddingRight="10px"
-              >
-                <Grid item xs={6}>
-                  <Typography variant="body1">{items.title}</Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  container
-                  justifyContent="flex-end"
-                  alignItems="center"
-                >
-                  <Typography variant="body1">Qty {items.quantity}</Typography>
-                  <TextField
-                    size="small"
-                    sx={{ width: "80px", marginLeft: 2 }}
-                    variant="outlined"
-                    margin="normal"
-                    value={"Rs: " + items.price * items.quantity}
-                  />
-                  <CancelIcon sx={{ marginLeft: 2, color: "#f35151" }} />
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
-          <Grid item xs={12}>
-            <h4>Discount</h4>
-          </Grid>
-          <Grid item xs={12}>
-            <h4>{state.total}</h4>
-          </Grid>
-          <Grid item xs={12}>
-            <h4>Sub Total</h4>
-          </Grid>
-          <Grid item xs={12} textAlign="center">
-            <Button
-              sx={{
-                bgcolor: "#10BADF",
-                marginTop: 1,
-                borderRadius: 1,
-                width: { xs: 180, sm: 100, md: 150 },
-              }}
-              variant="contained"
-              onClick={() => handlePayment()}
-            >
-              Pay
-            </Button>
-          </Grid>
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ p: 2 }}
+      >
+        <Grid item>
+          <Typography variant="h6">Order #{state.orderNumber}</Typography>
         </Grid>
-      }
-      {
-        <Modal open={open} onClose={handleClose}>
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              width: "500px",
-              height: "400px",
-              padding: "20px",
-              borderRadius: "5px",
-              outline: "none",
+        <Grid item>
+          <Button
+            sx={{
               textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+              bgcolor: "#f35151",
+              borderRadius: 1,
+              width: { xs: 180, sm: 100, md: 150 },
             }}
+            variant="contained"
+            startIcon={<ClearIcon />}
+            onClick={handleClearCart}
           >
-            <CancelIcon
-              onClick={handleClose}
-              sx={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                color: "#f35151",
-              }}
-            />
-            <Typography variant="h4">Bill Summary</Typography>
-            <TextField
-              label="Total"
-              variant="outlined"
-              value={state.total}
-              margin="normal"
-            />
-            <TextField
-              label="Received Amount"
-              variant="outlined"
-              value={amountReceived}
-              onChange={handleChange}
-              margin="normal"
-            />
-            <Button
-              variant="contained"
-              onClick={calculateBalance}
-              sx={{ margin: "10px" }}
-            >
-              Balance
-            </Button>
-            {showBalance && (
-              <TextField
-                label="Balance"
-                variant="outlined"
-                value={balance}
-                margin="normal"
-              />
-            )}
-            {showBalance && (
-              <Button variant="contained" onClick={billPdf}>
-                Print
-              </Button>
-            )}
-          </div>
-        </Modal>
-      }
-      {
-        <Modal open={pdfView} onClose={handlePdfClose}>
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              width: "1000px",
-              height: "1500px",
-              padding: "20px",
-              borderRadius: "5px",
-              outline: "none",
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <BillPDF amount={amountReceived}/>
-            {/* <PDFDownloadLink
-              document={<BillPDF amount={amountReceived} />}
-              fileName="example.pdf"
-            >
-              {({ loading }) =>
-                loading ? (
-                  <Button
-                    variant="contained"
-                    onClick={calculateBalance}
-                    sx={{ margin: "10px" }}
-                  >
-                    Loading Document...
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={calculateBalance}
-                    sx={{ margin: "10px" }}
-                  >
-                    Download
-                  </Button>
-                )
-              }
-            </PDFDownloadLink> */}
-          </div>
-        </Modal>
-      }
-    </div>
+            Clear Cart
+          </Button>
+        </Grid>
+      </Grid>
+      <TableContainer sx={{ height: 500 }}>
+        <Table stickyHeader sx={{ minWidth: 460 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Item</TableCell>
+              <TableCell align="center">Quantity</TableCell>
+              <TableCell align="left">UPrice&nbsp;(RS:)</TableCell>
+              <TableCell align="left">Price&nbsp;(RS:)</TableCell>
+              <TableCell align="left"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody sx={{ maxHeight: "300px", overflow: "auto" }}>
+            {state.cartItems.map((item) => (
+              <TableRow
+                key={item._id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {item.title}
+                </TableCell>
+                <TableCell align="right">
+                  <QuantityTextField
+                    item={item}
+                    onQuantityChange={handleChangeQuantity}
+                  />
+                </TableCell>
+                <TableCell align="left">{item.price}</TableCell>
+                <TableCell align="left">{item.price * item.quantity}</TableCell>
+                <TableCell align="left">
+                  <HighlightOffRoundedIcon
+                    sx={{ color: "#f35151" }}
+                    onClick={() => handleRemoveItemFromCart(item._id)}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 }
 

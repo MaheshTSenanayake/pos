@@ -1,31 +1,30 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
-export default function MediaCard({ title, description, image }) {
+function MediaCard({ item, handleAddToCart }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image={image}
-        title={title}
-      />
+    <Card sx={{ maxWidth: 150 }}>
+      <CardMedia sx={{ height: 140 }} image={item.image} title={item.title} />
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
-          {title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Price
+          {item.title}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant='outlined' size="small">Add to Cart</Button>
-        
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={()=>handleAddToCart(item)}
+        >
+          Add to Cart
+        </Button>
       </CardActions>
     </Card>
   );
 }
+export default MediaCard;

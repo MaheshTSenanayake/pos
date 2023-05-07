@@ -21,42 +21,60 @@
       "title": "Coca Cola",
       "price": 285,
       "category": "Soft Drink",
-      "image": "../public/image/image.jpeg"
+      "image": "./image/image.jpeg"
     },
     {
       "_id": "i3",
       "title": "Note Book",
       "price": 150,
       "category": "Stationery",
-      "image": "../../image.jpeg"
+      "image": "./image/image.jpeg"
     },
     {
       "_id": "i4",
       "title": "Pen",
       "price": 30,
       "category": "Stationery",
-      "image": "../../image.jpeg"
+      "image": "./image/image.jpeg"
     },
     {
       "_id": "i5",
       "title": "Banana",
       "price": 100,
       "category": "Fruit",
-      "image": "../../image.jpeg"
+      "image": "./image/image.jpeg"
     },
     {
       "_id": "i6",
       "title": "Mango",
       "price": 50,
       "category": "Fruit",
-      "image": "../../image.jpeg"
+      "image": "./image/image.jpeg"
     },
     {
       "_id": "i7",
-      "title": "Apple",
+      "title": "Apple1",
       "price": 50,
       "category": "Fruit",
-      "image": "../../image.jpeg"
+      "image": "./image/image.jpeg"
+    },{
+      "_id": "i8",
+      "title": "Apple2",
+      "price": 50,
+      "category": "Fruit",
+      "image": "./image/image.jpeg"
+    },{
+      "_id": "i9",
+      "title": "Apple3",
+      "price": 50,
+      "category": "Fruit",
+      "image": "./image/image.jpeg"
+    },{
+      "_id": "i10",
+      "title": "Apple4",
+      "price": 50,
+      "category": "Fruit",
+      "image": "./image/image.jpeg"
     }
   ]
 }

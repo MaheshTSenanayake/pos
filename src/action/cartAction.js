@@ -1,14 +1,44 @@
-import { ADD_TO_CART, PRINT_BILL, REMOVE_FROM_CART } from "./types";
+import {
+  ADD_TO_CART,
+  CALCULATE_TOTAL,
+  CLEAR_CART,
+  CREATE_ORDER_NUMBER,
+  PRINT_BILL,
+  REMOVE_FROM_CART,
+  UPDATE_QUANTITY,
+} from "./types";
 
-const addItem = (cartItems) => {
+const addItem = (cartItem) => {
   return {
     type: ADD_TO_CART,
-    payload: cartItems,
+    payload: cartItem,
   };
 };
-const deleteItem = () => {
+const deleteItem = (id) => {
   return {
     type: REMOVE_FROM_CART,
+    payload: id,
+  };
+};
+const updateQuantity = (quantity) => {
+  return {
+    type: UPDATE_QUANTITY,
+    payload: quantity,
+  };
+};
+const clearCart = () => {
+  return {
+    type: CLEAR_CART,
+  };
+};
+const calculateTotal = () => {
+  return {
+    type: CALCULATE_TOTAL,
+  };
+};
+const createOderNumber = () => {
+  return {
+    type: CREATE_ORDER_NUMBER,
   };
 };
 
@@ -18,4 +48,12 @@ const printBill = () => {
   };
 };
 
-export { addItem, deleteItem, printBill };
+export {
+  addItem,
+  deleteItem,
+  printBill,
+  updateQuantity,
+  clearCart,
+  calculateTotal,
+  createOderNumber,
+};
