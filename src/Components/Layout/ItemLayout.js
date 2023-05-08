@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   addItem,
   calculateTotal,
@@ -42,6 +43,15 @@ function ItemLayout() {
       dispatch(calculateTotal());
     }
   };
+  const handleSerialInput = (e) => {
+    if (e.keyCode === 13) {
+      const selectedCartItem = data.items.find(
+        (item) => item._id === e.target.value
+      );
+      handleAddToCart(selectedCartItem)
+      console.log(selectedCartItem);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -55,6 +65,17 @@ function ItemLayout() {
           overflow: "auto",
         }}
       >
+        <Grid item xs={12} sx={{ textAlign: "center" }}>
+          <TextField
+            onKeyDown={handleSerialInput}
+            InputProps={{
+              endAdornment: (
+                <SearchIcon sx={{ color: "gray" }} fontSize="small" />
+              ),
+            }}
+            placeholder="Serial"
+          />
+        </Grid>
         {data.items.map((item) => (
           <Grid item xs={12} sm={6} md={2} key={item._id}>
             <MediaCard item={item} handleAddToCart={handleAddToCart} />

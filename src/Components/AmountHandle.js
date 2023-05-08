@@ -64,11 +64,17 @@ function AmountHandle() {
                   </Grid>
                   <Grid item xs={8}>
                     <TextField
-                      value={state.total.toFixed(2)}
+                      value={
+                        state.currency === "LKR"
+                          ? state.total.lkr
+                          : state.total.usd
+                      }
                       variant="outlined"
                       InputProps={{
                         startAdornment: (
-                          <InputAdornment position="start">RS:</InputAdornment>
+                          <InputAdornment position="start">
+                            {state.currency}:
+                          </InputAdornment>
                         ),
                       }}
                     />
@@ -91,7 +97,9 @@ function AmountHandle() {
                       variant="outlined"
                       InputProps={{
                         startAdornment: (
-                          <InputAdornment position="start">RS:</InputAdornment>
+                          <InputAdornment position="start">
+                            {state.currency}:
+                          </InputAdornment>
                         ),
                       }}
                     />
@@ -109,7 +117,9 @@ function AmountHandle() {
                       variant="outlined"
                       InputProps={{
                         startAdornment: (
-                          <InputAdornment position="start">RS:</InputAdornment>
+                          <InputAdornment position="start">
+                            {state.currency}:
+                          </InputAdornment>
                         ),
                       }}
                     />

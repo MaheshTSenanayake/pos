@@ -1,6 +1,7 @@
 import {
   ADD_TO_CART,
   CALCULATE_TOTAL,
+  CHANGE_CURRENCY,
   CLEAR_CART,
   CREATE_ORDER_NUMBER,
   PRINT_BILL,
@@ -41,7 +42,13 @@ const createOderNumber = () => {
     type: CREATE_ORDER_NUMBER,
   };
 };
-
+const changeCurrency = (currency) => {
+  console.log("change currency");
+  return {
+    type: CHANGE_CURRENCY,
+    payload: currency,
+  };
+};
 const printBill = () => {
   return {
     type: PRINT_BILL,
@@ -56,4 +63,5 @@ export {
   clearCart,
   calculateTotal,
   createOderNumber,
+  changeCurrency,
 };

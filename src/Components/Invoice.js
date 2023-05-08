@@ -56,7 +56,7 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
       <div ref={componentRef}>
         <Container container spacing={3} padding={2}>
           <Grid item xs={12}>
-            <Grid container xs={12} alignItems="center">
+            <Grid container alignItems="center">
               <Grid item xs={6}>
                 <img src={logoImage} alt="Logo" />
               </Grid>
@@ -79,7 +79,7 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
               </Grid>
             </Grid>
 
-            {/* <Grid container xs={12} sx={{ padding: "10px" }}>
+            <Grid container sx={{ padding: "10px" }}>
               <Grid item xs={6}>
                 <Typography variant="h6">Bill To:</Typography>
                 <Typography variant="body2">customerName</Typography>
@@ -97,16 +97,16 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
                   <Typography variant="body2">customerEmail</Typography>
                 </Grid>
               </Grid>
-            </Grid> */}
-            <Grid container xs={12} sx={{ padding: "10px" }}>
+            </Grid>
+            <Grid container sx={{ padding: "10px" }}>
               <TableContainer>
                 <Table>
                   <TableHead>
                     <TableRow sx={{ bgcolor: "#98a3a7" }}>
                       <TableCell>Item</TableCell>
-                      <TableCell align="left">Unit Price&nbsp;(RS:)</TableCell>
+                      <TableCell align="left">Unit Price&nbsp;({state.currency})</TableCell>
                       <TableCell align="left">Qty</TableCell>
-                      <TableCell align="left">Price&nbsp;(RS:)</TableCell>
+                      <TableCell align="left">Price&nbsp;({state.currency})</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
