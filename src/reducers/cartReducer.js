@@ -1,6 +1,7 @@
 import {
   ADD_TO_CART,
   CALCULATE_TOTAL,
+  CHANGE_CURRENCY,
   CLEAR_CART,
   CREATE_ORDER_NUMBER,
   REMOVE_FROM_CART,
@@ -10,7 +11,8 @@ import {
 const initialState = {
   cartItems: [],
   orderNumber: 1,
-  total: 0,
+  total: { lkr: 0, usd: 0 },
+  currency: "LKR",
 };
 
 const cartReducer = (state = initialState, action) => {
@@ -41,19 +43,28 @@ const cartReducer = (state = initialState, action) => {
       );
       return { ...state, cartItems: updatedObjectArray };
     case CALCULATE_TOTAL:
-      state.total = 0;
-      state.cartItems.map(
-        (cartItem) =>
-          (state.total = state.total + cartItem.price * cartItem.quantity)
-      );
+      let usdTotal = 0;
+      let lkrTotal = 0;
+      state.cartItems.forEach((cartItem) => {
+        lkrTotal += cartItem.price.lkr * cartItem.quantity;
+        usdTotal += cartItem.price.usd * cartItem.quantity;
+      });
+      state.total.lkr = lkrTotal.toFixed(2);
+      state.total.usd = usdTotal.toFixed(2);
       return {
         ...state,
       };
+
     case CREATE_ORDER_NUMBER:
       const newOrderNumber = state.orderNumber + 1;
       return {
         ...state,
         orderNumber: newOrderNumber,
+      };
+    case CHANGE_CURRENCY:
+      return {
+        ...state,
+        currency: action.payload,
       };
     default:
       return state;

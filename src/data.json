@@ -12,69 +12,102 @@
     {
       "_id": "i1",
       "title": "Fanta",
-      "price": 300,
+      "price": { "lkr": 300, "usd": 2 },
       "category": "Soft Drink",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "1",
+      "stockQuantity": 10,
+      "standedPrice": 1
     },
     {
       "_id": "i2",
       "title": "Coca Cola",
-      "price": 285,
+      "price": { "lkr": 285, "usd": 0.9 },
       "category": "Soft Drink",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "2",
+      "stockQuantity": 10,
+      "standedPrice": 1
     },
     {
       "_id": "i3",
       "title": "Note Book",
-      "price": 150,
+      "price": { "lkr": 50, "usd": 0.1 },
       "category": "Stationery",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "3",
+      "stockQuantity": 10,
+      "standedPrice": 1
     },
     {
       "_id": "i4",
       "title": "Pen",
-      "price": 30,
+      "price": { "lkr": 10, "usd": 0.02 },
       "category": "Stationery",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "4",
+      "stockQuantity": 10,
+      "standedPrice": 1
     },
     {
       "_id": "i5",
       "title": "Banana",
-      "price": 100,
+      "price": { "lkr": 50, "usd": 0.1 },
       "category": "Fruit",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "5",
+      "stockQuantity": 10,
+      "standedPrice": 1
     },
     {
       "_id": "i6",
       "title": "Mango",
-      "price": 50,
+      "price": { "lkr": 300, "usd": 1 },
       "category": "Fruit",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "6",
+      "stockQuantity": 10,
+      "standedPrice": 1
     },
     {
       "_id": "i7",
       "title": "Apple1",
       "price": 50,
       "category": "Fruit",
-      "image": "./image/image.jpeg"
-    },{
+      "image": "./image/image.jpeg",
+      "sereal": "7",
+      "stockQuantity": 10,
+      "standedPrice": 1
+    },
+    {
       "_id": "i8",
       "title": "Apple2",
-      "price": 50,
+      "price": { "lkr": 300, "usd": 1 },
       "category": "Fruit",
-      "image": "./image/image.jpeg"
-    },{
+      "image": "./image/image.jpeg",
+      "sereal": "8",
+      "stockQuantity": 10,
+      "standedPrice": 1
+    },
+    {
       "_id": "i9",
       "title": "Apple3",
-      "price": 50,
+      "price": { "lkr": 300, "usd": 1 },
       "category": "Fruit",
-      "image": "./image/image.jpeg"
-    },{
+      "image": "./image/image.jpeg",
+      "sereal": "9",
+      "stockQuantity": 10,
+      "standedPrice": 1
+    },
+    {
       "_id": "i10",
       "title": "Apple4",
-      "price": 50,
+      "price": { "lkr": 300, "usd": 1 },
       "category": "Fruit",
-      "image": "./image/image.jpeg"
+      "image": "./image/image.jpeg",
+      "sereal": "10",
+      "stockQuantity": 10,
+      "standedPrice": 1
     }
   ]
 }

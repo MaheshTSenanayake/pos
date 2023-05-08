@@ -11,14 +11,17 @@ import Paper from "@mui/material/Paper";
 import QuantityTextField from "../QuantityTextField";
 import {
   calculateTotal,
+  changeCurrency,
   clearCart,
   deleteItem,
   updateQuantity,
 } from "../../action/cartAction";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
+import { useState } from "react";
 
 function CartLayout() {
+  const [currency, setCurrency] = useState("USD");
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -45,22 +48,47 @@ function CartLayout() {
         justifyContent="space-between"
         sx={{ p: 2 }}
       >
-        <Grid item>
-          <Typography variant="h6">Order #{state.orderNumber}</Typography>
+        <Grid item xs={2}>
+          <Typography variant="p">Order #{state.orderNumber}</Typography>
         </Grid>
-        <Grid item>
+        <Grid item xs={5.5} sx={{ textAlign: "center" }}>
+          <TextField
+            size="small"
+            label="Mobile Number"
+            type="search"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={3} sx={{ textAlign: "center" }}>
           <Button
             sx={{
               textAlign: "center",
               bgcolor: "#f35151",
               borderRadius: 1,
-              width: { xs: 180, sm: 100, md: 150 },
             }}
             variant="contained"
+            size="small"
             startIcon={<ClearIcon />}
             onClick={handleClearCart}
           >
             Clear Cart
+          </Button>
+        </Grid>
+        <Grid item xs={1.5} sx={{ textAlign: "right" }}>
+          <Button
+            sx={{
+              textAlign: "center",
+              bgcolor: "#10BADF",
+              borderRadius: 1,
+            }}
+            variant="contained"
+            size="small"
+            onClick={() => {
+              currency === "LKR" ? setCurrency("USD") : setCurrency("LKR");
+              dispatch(changeCurrency(currency));
+            }}
+          >
+            {currency}
           </Button>
         </Grid>
       </Grid>
@@ -70,8 +98,8 @@ function CartLayout() {
             <TableRow>
               <TableCell align="left">Item</TableCell>
               <TableCell align="center">Quantity</TableCell>
-              <TableCell align="left">UPrice&nbsp;(RS:)</TableCell>
-              <TableCell align="left">Price&nbsp;(RS:)</TableCell>
+              <TableCell align="left">UPrice&nbsp;({state.currency})</TableCell>
+              <TableCell align="left">Price&nbsp;({state.currency})</TableCell>
               <TableCell align="left"></TableCell>
             </TableRow>
           </TableHead>
@@ -90,8 +118,16 @@ function CartLayout() {
                     onQuantityChange={handleChangeQuantity}
                   />
                 </TableCell>
-                <TableCell align="left">{item.price}</TableCell>
-                <TableCell align="left">{item.price * item.quantity}</TableCell>
+                <TableCell align="left">
+                  {state.currency === "LKR"
+                    ? item.price.lkr.toFixed(2)
+                    : item.price.usd.toFixed(2)}
+                </TableCell>
+                <TableCell align="left">
+                  {state.currency === "LKR"
+                    ? (item.price.lkr * item.quantity).toFixed(2)
+                    : (item.price.usd * item.quantity).toFixed(2)}
+                </TableCell>
                 <TableCell align="left">
                   <HighlightOffRoundedIcon
                     sx={{ color: "#f35151" }}
