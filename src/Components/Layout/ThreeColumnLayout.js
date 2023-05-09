@@ -11,10 +11,10 @@ function ThreeColumnLayout() {
         <CartLayout />
         <AmountHandle />
       </Grid>
-      <Grid item xs={1} sx={{ margin: "16px" }}>
+      <Grid item xs={1}>
         <CategoryLayout />
       </Grid>
-      <Grid item xs={6} sx={{ margin: "16px" }}>
+      <Grid item xs={7}>
         <ItemLayout />
       </Grid>
     </Grid>

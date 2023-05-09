@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, InputAdornment, Modal, TextField } from "@mui/material";
-import Invoice from "./Invoice";
+import Invoice from "./Layout/print/Invoice";
 import {
   calculateTotal,
   clearCart,
@@ -30,7 +30,9 @@ function AmountHandle() {
   const handleAmountReceivedValue = (e) => {
     const amountRecieved = e.target.value;
     setAmountReceived(amountRecieved);
-    setBalance(amountRecieved - state.total);
+    state.currency === "LKR"
+      ? setBalance(amountRecieved - state.total.lkr)
+      : setBalance(amountRecieved - state.total.usd);
   };
 
   const printBill = () => {

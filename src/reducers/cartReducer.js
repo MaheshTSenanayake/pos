@@ -13,6 +13,7 @@ const initialState = {
   orderNumber: 1,
   total: { lkr: 0, usd: 0 },
   currency: "LKR",
+  invoiceItem: [],
 };
 
 const cartReducer = (state = initialState, action) => {

@@ -14,12 +14,15 @@ import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 
-import logoImage from "./../logo.png";
+import logoImage from "./logo.png";
 
 const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
   const state = useSelector((state) => state);
   const paymentValue = parseInt(amountRecievedValue);
-  const balance = paymentValue - state.total;
+  const balance =
+    state.currency === "LKR"
+      ? paymentValue - state.total.lkr
+      : paymentValue - state.total.usd;
 
   const today = new Date();
   const date =
@@ -104,19 +107,30 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
                   <TableHead>
                     <TableRow sx={{ bgcolor: "#98a3a7" }}>
                       <TableCell>Item</TableCell>
-                      <TableCell align="left">Unit Price&nbsp;({state.currency})</TableCell>
+                      <TableCell align="left">
+                        Unit Price&nbsp;({state.currency})
+                      </TableCell>
                       <TableCell align="left">Qty</TableCell>
-                      <TableCell align="left">Price&nbsp;({state.currency})</TableCell>
+                      <TableCell align="left">
+                        Price&nbsp;({state.currency})
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {state.cartItems.map((item) => {
-                      let totalPrice = item.quantity * item.price;
+                      let totalPrice =
+                        state.currency === "LKR"
+                          ? item.quantity * item.price.lkr
+                          : item.quantity * item.price.usd;
 
                       return (
                         <TableRow key={item._id}>
                           <TableCell>{item.title}</TableCell>
-                          <TableCell>{item.price.toFixed(2)}</TableCell>
+                          <TableCell>
+                            {state.currency === "LKR"
+                              ? item.price.lkr.toFixed(2)
+                              : item.price.usd.toFixed(2)}
+                          </TableCell>
                           <TableCell>{item.quantity}</TableCell>
                           <TableCell>{totalPrice.toFixed(2)}</TableCell>
                         </TableRow>
@@ -126,7 +140,11 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
                       <TableCell align="right" colSpan={3}>
                         total
                       </TableCell>
-                      <TableCell>{state.total}</TableCell>
+                      <TableCell>
+                        {state.currency === "LKR"
+                          ? state.total.lkr
+                          : state.total.usd}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell align="right" colSpan={3}>
