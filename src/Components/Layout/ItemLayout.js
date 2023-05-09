@@ -57,7 +57,6 @@ function ItemLayout() {
     <div className={classes.root}>
       <Grid
         container
-        spacing={3}
         sx={{
           marginTop: "0px",
           padding: "10px",
@@ -65,7 +64,7 @@ function ItemLayout() {
           overflow: "auto",
         }}
       >
-        <Grid item xs={12} sx={{ textAlign: "center" }}>
+        <Grid item xs={12} sx={{ textAlign: "center", margin:"8px" }}>
           <TextField
             onKeyDown={handleSerialInput}
             InputProps={{

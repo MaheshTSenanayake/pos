@@ -18,13 +18,13 @@ function CategoryLayout() {
   const classes = useStyle();
   return (
     <div className={classes.root}>
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container justifyContent="center">
         {data.category.map((category, index) => (
           <Grid key={category._id} item xs={12}>
             <Button
               sx={{
                 bgcolor: "#10BADF",
-                marginTop: 1,
+                margin: 1,
                 borderRadius: 1,
                 width: { xs: 180, sm: 100, md: 150 },
               }}
