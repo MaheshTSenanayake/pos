@@ -5,8 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
 
 function MediaCard({ item, handleAddToCart }) {
+  const state = useSelector((state) => state);
   return (
     <Card sx={{ maxWidth: 150, margin: 1 }}>
       <CardMedia sx={{ height: 140 }} image={item.image} title={item.title} />
@@ -18,7 +20,8 @@ function MediaCard({ item, handleAddToCart }) {
           {item.stockQuantity} in stock
         </Typography>
         <Typography gutterBottom variant="body2" component="div">
-          LKR: {item.stockQuantity}
+          {state.currency}:{" "}
+          {state.currency === "LKR" ? item.price.lkr : item.price.usd}
         </Typography>
       </CardContent>
       <CardActions>

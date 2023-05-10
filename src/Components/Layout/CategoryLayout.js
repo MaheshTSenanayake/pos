@@ -15,14 +15,12 @@ const useStyle = styled((theme) => ({
   },
 }));
 
-
-
 function CategoryLayout() {
   const state = useSelector((state) => state);
   const classes = useStyle();
-  const checkInvocelist=()=>{
-    console.log(state)
-  }
+  const checkInvocelist = () => {
+    console.log(state);
+  };
   return (
     <div className={classes.root}>
       <Grid container justifyContent="center">
@@ -35,7 +33,9 @@ function CategoryLayout() {
               width: { xs: 180, sm: 100, md: 150 },
             }}
             variant="contained"
-            onClick={()=>{checkInvocelist()}}
+            onClick={() => {
+              checkInvocelist();
+            }}
           >
             All
           </Button>

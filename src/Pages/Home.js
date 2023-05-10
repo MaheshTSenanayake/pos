@@ -8,7 +8,7 @@ const data = require("../data.json");
 function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getStockItems(data.items));
+    dispatch(getStockItems(data));
   }, [dispatch]);
 
   return (

@@ -6,6 +6,7 @@ import {
   addItem,
   calculateTotal,
   updateQuantity,
+  updateStockQuantity,
 } from "../../action/cartAction";
 import MediaCard from "./MediaCard";
 
@@ -28,6 +29,7 @@ function ItemLayout() {
   const height = window.innerHeight;
 
   const handleAddToCart = (item) => {
+    dispatch(updateStockQuantity(item._id, "decrease"));
     if (state.cartItems.some((cartItem) => cartItem._id === item._id)) {
       const selectedCartItem = state.cartItems.find(
         (cartItem) => cartItem._id === item._id
@@ -37,7 +39,6 @@ function ItemLayout() {
       dispatch(updateQuantity(updateQuantityData));
       dispatch(calculateTotal());
     } else {
-      item.quantity = 1;
       dispatch(addItem(item));
       dispatch(calculateTotal());
     }
@@ -48,7 +49,6 @@ function ItemLayout() {
         (item) => item._id === e.target.value
       );
       handleAddToCart(selectedCartItem);
-      console.log(selectedCartItem);
     }
   };
 
