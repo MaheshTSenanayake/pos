@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 import { AddCircleOutline, RemoveCircle } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateStockQuantity } from "../action/cartAction";
 
 const useStyles = styled((theme) => ({
   root: {
@@ -14,6 +15,7 @@ const useStyles = styled((theme) => ({
 
 function QuantityTextField({ item, onQuantityChange }) {
   const state = useSelector((state) => state.cartItems);
+  const dispatch = useDispatch();
 
   const selectedCartItem = state.find((cartItem) => cartItem._id === item._id);
   const quantity = selectedCartItem ? selectedCartItem.quantity : 0;
@@ -21,16 +23,19 @@ function QuantityTextField({ item, onQuantityChange }) {
   const handleIncrease = () => {
     const updateQuantityData = { id: item._id, newValue: quantity + 1 };
     onQuantityChange(updateQuantityData);
+    dispatch(updateStockQuantity(item._id, "decrease"));
   };
 
   const handleDecrease = () => {
     const updateQuantityData = { id: item._id, newValue: quantity - 1 };
     onQuantityChange(updateQuantityData);
+    dispatch(updateStockQuantity(item._id, "increase"));
   };
 
   const handleTextfieldValueChange = (e) => {
     const newValue = parseInt(e.target.value) || 0;
     onQuantityChange(item._id, newValue);
+    
   };
 
   const classes = useStyles();

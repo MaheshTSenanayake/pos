@@ -5,10 +5,12 @@ import {
   CLEAR_CART,
   CREATE_ORDER_NUMBER,
   GET_STOCK_ITEMS,
+  LOAD_INVOICE_DATA,
   PRINT_BILL,
   REMOVE_FROM_CART,
   SAVE_iNVOICE_DATA,
   UPDATE_QUANTITY,
+  UPDATE_STOCK_QUANTITY,
 } from "./types";
 
 const addItem = (cartItem) => {
@@ -50,15 +52,28 @@ const changeCurrency = (currency) => {
     payload: currency,
   };
 };
-const getStockItems = (stockItems) => {
+const getStockItems = (data) => {
   return {
     type: GET_STOCK_ITEMS,
-    payload: stockItems,
+    payload: data,
   };
 };
 const saveDraftInvoice = (invoiceData) => {
   return {
     type: SAVE_iNVOICE_DATA,
+    payload: invoiceData,
+  };
+};
+const updateStockQuantity = (id, status) => {
+  return {
+    type: UPDATE_STOCK_QUANTITY,
+    payload: id,
+    status: status,
+  };
+};
+const loadInvoiceData = (invoiceData) => {
+  return {
+    type: LOAD_INVOICE_DATA,
     payload: invoiceData,
   };
 };
@@ -79,4 +94,6 @@ export {
   changeCurrency,
   getStockItems,
   saveDraftInvoice,
+  updateStockQuantity,
+  loadInvoiceData,
 };

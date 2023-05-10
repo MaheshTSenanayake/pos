@@ -5,34 +5,46 @@ import {
   CLEAR_CART,
   CREATE_ORDER_NUMBER,
   GET_STOCK_ITEMS,
+  LOAD_INVOICE_DATA,
   REMOVE_FROM_CART,
   SAVE_iNVOICE_DATA,
   UPDATE_QUANTITY,
+  UPDATE_STOCK_QUANTITY,
 } from "../action/types";
 
 const initialState = {
-  stockItems: [],
   cartItems: [],
   orderNumber: 1,
   total: { lkr: 0, usd: 0 },
   currency: "LKR",
   invoiceList: [],
+  category: [],
+  stockItems: [],
 };
 
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      const newItem = action.payload;
+      const newItem = { ...action.payload, quantity: 1 };
       return {
         ...state,
         cartItems: [...state.cartItems, newItem],
       };
     case REMOVE_FROM_CART:
+      const removeQty = state.cartItems.filter(
+        (item) => item._id === action.payload
+      )[0].quantity;
+      const updatededStocItems = state.stockItems.map((stockItem) =>
+        stockItem._id === action.payload
+          ? { ...stockItem, stockQuantity: stockItem.stockQuantity + removeQty }
+          : stockItem
+      );
       return {
         ...state,
         cartItems: state.cartItems.filter(
           (item) => item._id !== action.payload
         ),
+        stockItems: updatededStocItems,
       };
     case CLEAR_CART:
       return {
@@ -73,13 +85,51 @@ const cartReducer = (state = initialState, action) => {
     case GET_STOCK_ITEMS:
       return {
         ...state,
-        stockItems: action.payload,
+        stockItems: action.payload.items,
+        category: action.payload.category,
       };
+    case UPDATE_STOCK_QUANTITY:
+      if (action.status === "decrease") {
+        const updatedStockObjectArray = state.stockItems.map((stockItem) =>
+          stockItem._id === action.payload
+            ? { ...stockItem, stockQuantity: stockItem.stockQuantity - 1 }
+            : stockItem
+        );
+        return { ...state, stockItems: updatedStockObjectArray };
+      } else {
+        const updatedStockObjectArray = state.stockItems.map((stockItem) =>
+          stockItem._id === action.payload
+            ? { ...stockItem, stockQuantity: stockItem.stockQuantity + 1 }
+            : stockItem
+        );
+        return { ...state, stockItems: updatedStockObjectArray };
+      }
     case SAVE_iNVOICE_DATA:
+      if (
+        state.invoiceList.some(
+          (invoiceItem) => invoiceItem.invoiceId === action.payload.invoiceId
+        )
+      ) {
+        const newInvoiceList = state.invoiceList.filter(
+          (invoiceItem) => invoiceItem.invoiceId !== action.payload.invoiceId
+        );
+        return {
+          ...state,
+          invoiceList: [...newInvoiceList, action.payload],
+        };
+      } else {
+        return {
+          ...state,
+          invoiceList: [...state.invoiceList, action.payload],
+        };
+      }
+
+    case LOAD_INVOICE_DATA:
       console.log(action.payload);
       return {
         ...state,
-        invoiceList: [...state.invoiceList, action.payload],
+        orderNumber: action.payload.invoiceId,
+        cartItems: action.payload.purchaseItems,
       };
     default:
       return state;

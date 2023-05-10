@@ -13,6 +13,7 @@ import {
   saveDraftInvoice,
 } from "../action/cartAction";
 import moment from "moment";
+import InvoiceTabList from "./Layout/InvoiceTabList";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -202,6 +203,11 @@ function AmountHandle() {
                 >
                   Credit Sale
                 </Button>
+              </Item>
+            </Grid>
+            <Grid item xs={12}>
+              <Item sx={{ textAlign: "center" }}>
+                <InvoiceTabList />
               </Item>
             </Grid>
           </Grid>
