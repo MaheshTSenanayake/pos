@@ -10,7 +10,9 @@ import {
   calculateTotal,
   clearCart,
   createOderNumber,
+  saveDraftInvoice,
 } from "../action/cartAction";
+import moment from "moment";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -21,9 +23,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function AmountHandle() {
-  const dispstch = useDispatch();
+  const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [amountRecieved, setAmountReceived] = React.useState();
+  const [amountRecieved, setAmountReceived] = React.useState("");
   const [pdfView, setPdfView] = React.useState(false);
   const [balance, setBalance] = React.useState(0);
 
@@ -35,18 +37,48 @@ function AmountHandle() {
       : setBalance(amountRecieved - state.total.usd);
   };
 
-  const printBill = () => {
-    setPdfView(true);
-  };
   const handlePdfClose = () => {
     setPdfView(false);
   };
   const clearData = () => {
     setAmountReceived("");
     setBalance(0);
-    dispstch(clearCart());
-    dispstch(calculateTotal());
-    dispstch(createOderNumber());
+    dispatch(clearCart());
+    dispatch(calculateTotal());
+    dispatch(createOderNumber());
+  };
+
+  const now = moment();
+  const date = now.format("YYYY/MM/DD");
+  const time = now.format("hh:mm:ss A");
+
+  const invoiceData = {
+    invoiceId: state.orderNumber,
+    date: date,
+    time: time,
+    customerId: 1,
+    currency: state.currency,
+    purchaseItems: state.cartItems,
+    total: state.currency === "LKR" ? state.total.lkr : state.total.usd,
+    amountRecieved: amountRecieved,
+    balance: balance,
+  };
+
+  const printBill = (invoiceData) => {
+    invoiceData.invoiceStatus = { status: "Complete", payMethod: "Complete" };
+    dispatch(saveDraftInvoice(invoiceData));
+    setPdfView(true);
+  };
+
+  const saveInvoiceData = (invoiceData) => {
+    invoiceData.invoiceStatus = { status: "Drafts", payMethod: "notDefine" };
+    dispatch(saveDraftInvoice(invoiceData));
+    dispatch(createOderNumber());
+  };
+  const saveCreditInvoice = (invoiceData) => {
+    invoiceData.invoiceStatus = { status: "Complete", payMethod: "Credit" };
+    dispatch(saveDraftInvoice(invoiceData));
+    dispatch(createOderNumber());
   };
 
   return (
@@ -134,14 +166,41 @@ function AmountHandle() {
                 <Button
                   sx={{
                     textAlign: "center",
-                    bgcolor: "#f35151",
+                    bgcolor: "#7ccb41",
                     borderRadius: 1,
                     width: { xs: 180, sm: 100, md: 150 },
+                    margin: 2,
                   }}
                   variant="contained"
-                  onClick={printBill}
+                  onClick={() => printBill(invoiceData)}
                 >
                   Pay
+                </Button>
+                <Button
+                  sx={{
+                    textAlign: "center",
+                    bgcolor: "#00a4bf",
+                    borderRadius: 1,
+                    width: { xs: 180, sm: 100, md: 150 },
+                    margin: 2,
+                  }}
+                  variant="contained"
+                  onClick={() => saveInvoiceData(invoiceData)}
+                >
+                  Save
+                </Button>
+                <Button
+                  sx={{
+                    textAlign: "center",
+                    bgcolor: "#9b9b9b",
+                    borderRadius: 1,
+                    width: { xs: 180, sm: 100, md: 150 },
+                    margin: 2,
+                  }}
+                  variant="contained"
+                  onClick={() => saveCreditInvoice(invoiceData)}
+                >
+                  Credit Sale
                 </Button>
               </Item>
             </Grid>

@@ -25,12 +25,15 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
       : paymentValue - state.total.usd;
 
   const today = new Date();
-  const date =
-    today.getFullYear() +
-    "/" +
-    (today.getMonth() + 1).toString().padStart(2, "0") +
-    "/" +
-    today.getDate().toString().padStart(2, "0");
+  const year = today.getFullYear();
+  const month = (today.getMonth() + 1).toString().padStart(2, "0");
+  const day = today.getDate().toString().padStart(2, "0");
+  const hour = today.getHours().toString().padStart(2, "0");
+  const minute = today.getMinutes().toString().padStart(2, "0");
+  const second = today.getSeconds().toString().padStart(2, "0");
+
+  const date = `${year}/${month}/${day}`;
+  const time = `${hour}:${minute}:${second}`;
 
   const Container = styled(Grid)({
     fontFamily: "Arial, sans-serif",
@@ -77,6 +80,12 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
                   </Grid>
                   <Grid item xs={9}>
                     <Typography variant="body2">{date}</Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography variant="body2">Time:</Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2">{time}</Typography>
                   </Grid>
                 </Grid>
               </Grid>

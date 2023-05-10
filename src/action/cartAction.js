@@ -4,8 +4,10 @@ import {
   CHANGE_CURRENCY,
   CLEAR_CART,
   CREATE_ORDER_NUMBER,
+  GET_STOCK_ITEMS,
   PRINT_BILL,
   REMOVE_FROM_CART,
+  SAVE_iNVOICE_DATA,
   UPDATE_QUANTITY,
 } from "./types";
 
@@ -43,10 +45,21 @@ const createOderNumber = () => {
   };
 };
 const changeCurrency = (currency) => {
-  console.log("change currency");
   return {
     type: CHANGE_CURRENCY,
     payload: currency,
+  };
+};
+const getStockItems = (stockItems) => {
+  return {
+    type: GET_STOCK_ITEMS,
+    payload: stockItems,
+  };
+};
+const saveDraftInvoice = (invoiceData) => {
+  return {
+    type: SAVE_iNVOICE_DATA,
+    payload: invoiceData,
   };
 };
 const printBill = () => {
@@ -64,4 +77,6 @@ export {
   calculateTotal,
   createOderNumber,
   changeCurrency,
+  getStockItems,
+  saveDraftInvoice,
 };
