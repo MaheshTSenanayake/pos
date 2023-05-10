@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Button, Grid } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const data = require("../../data.json");
 
@@ -14,11 +15,31 @@ const useStyle = styled((theme) => ({
   },
 }));
 
+
+
 function CategoryLayout() {
+  const state = useSelector((state) => state);
   const classes = useStyle();
+  const checkInvocelist=()=>{
+    console.log(state)
+  }
   return (
     <div className={classes.root}>
       <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <Button
+            sx={{
+              bgcolor: "#10BADF",
+              margin: 1,
+              borderRadius: 1,
+              width: { xs: 180, sm: 100, md: 150 },
+            }}
+            variant="contained"
+            onClick={()=>{checkInvocelist()}}
+          >
+            All
+          </Button>
+        </Grid>
         {data.category.map((category, index) => (
           <Grid key={category._id} item xs={12}>
             <Button

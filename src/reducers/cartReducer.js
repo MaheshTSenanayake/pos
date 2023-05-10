@@ -4,16 +4,19 @@ import {
   CHANGE_CURRENCY,
   CLEAR_CART,
   CREATE_ORDER_NUMBER,
+  GET_STOCK_ITEMS,
   REMOVE_FROM_CART,
+  SAVE_iNVOICE_DATA,
   UPDATE_QUANTITY,
 } from "../action/types";
 
 const initialState = {
+  stockItems: [],
   cartItems: [],
   orderNumber: 1,
   total: { lkr: 0, usd: 0 },
   currency: "LKR",
-  invoiceItem: [],
+  invoiceList: [],
 };
 
 const cartReducer = (state = initialState, action) => {
@@ -66,6 +69,17 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         currency: action.payload,
+      };
+    case GET_STOCK_ITEMS:
+      return {
+        ...state,
+        stockItems: action.payload,
+      };
+    case SAVE_iNVOICE_DATA:
+      console.log(action.payload);
+      return {
+        ...state,
+        invoiceList: [...state.invoiceList, action.payload],
       };
     default:
       return state;

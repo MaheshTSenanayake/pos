@@ -8,7 +8,6 @@ import {
   updateQuantity,
 } from "../../action/cartAction";
 import MediaCard from "./MediaCard";
-const data = require("../../data.json");
 
 const useStyle = styled((theme) => ({
   root: {
@@ -45,10 +44,10 @@ function ItemLayout() {
   };
   const handleSerialInput = (e) => {
     if (e.keyCode === 13) {
-      const selectedCartItem = data.items.find(
+      const selectedCartItem = state.stockItems.find(
         (item) => item._id === e.target.value
       );
-      handleAddToCart(selectedCartItem)
+      handleAddToCart(selectedCartItem);
       console.log(selectedCartItem);
     }
   };
@@ -64,7 +63,7 @@ function ItemLayout() {
           overflow: "auto",
         }}
       >
-        <Grid item xs={12} sx={{ textAlign: "center", margin:"8px" }}>
+        <Grid item xs={12} sx={{ textAlign: "center", margin: "8px" }}>
           <TextField
             onKeyDown={handleSerialInput}
             InputProps={{
@@ -75,7 +74,7 @@ function ItemLayout() {
             placeholder="Serial"
           />
         </Grid>
-        {data.items.map((item) => (
+        {state.stockItems.map((item) => (
           <Grid item xs={12} sm={6} md={2} key={item._id}>
             <MediaCard item={item} handleAddToCart={handleAddToCart} />
           </Grid>
