@@ -16,13 +16,8 @@ import { useReactToPrint } from "react-to-print";
 
 import logoImage from "./logo.png";
 
-const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
+const Invoice = () => {
   const state = useSelector((state) => state);
-  const paymentValue = parseInt(amountRecievedValue);
-  const balance =
-    state.currency === "LKR"
-      ? paymentValue - state.total.lkr
-      : paymentValue - state.total.usd;
 
   const today = new Date();
   const year = today.getFullYear();
@@ -34,6 +29,9 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
 
   const date = `${year}/${month}/${day}`;
   const time = `${hour}:${minute}:${second}`;
+
+  const amountRecieved = parseInt(state.currentInvoice.recieveAmount);
+  const balance = parseInt(state.currentInvoice.balance);
 
   const Container = styled(Grid)({
     fontFamily: "Arial, sans-serif",
@@ -48,10 +46,7 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
     content: () => componentRef.current,
   });
 
-  const handlePdfViewClose = () => {
-    clearData();
-    handlePdfClose();
-  };
+  const handlePdfViewClose = () => {};
 
   return (
     <div>
@@ -126,7 +121,7 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {state.cartItems.map((item) => {
+                    {state.currentInvoice.cartItems.map((item) => {
                       let totalPrice =
                         state.currency === "LKR"
                           ? item.quantity * item.price.lkr
@@ -151,15 +146,15 @@ const Invoice = ({ amountRecievedValue, handlePdfClose, clearData }) => {
                       </TableCell>
                       <TableCell>
                         {state.currency === "LKR"
-                          ? state.total.lkr
-                          : state.total.usd}
+                          ? state.currentInvoice.total.lkr
+                          : state.currentInvoice.total.usd}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell align="right" colSpan={3}>
                         Amount Received
                       </TableCell>
-                      <TableCell>{paymentValue.toFixed(2)}</TableCell>
+                      <TableCell>{amountRecieved.toFixed(2)}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell align="right" colSpan={3}>

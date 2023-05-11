@@ -6,8 +6,7 @@ import {
   addItem,
   calculateTotal,
   updateQuantity,
-  updateStockQuantity,
-} from "../../action/cartAction";
+} from "../../store/action/cartAction.js";
 import MediaCard from "./MediaCard";
 
 const useStyle = styled((theme) => ({
@@ -29,20 +28,29 @@ function ItemLayout() {
   const height = window.innerHeight;
 
   const handleAddToCart = (item) => {
-    dispatch(updateStockQuantity(item._id, "decrease"));
-    if (state.cartItems.some((cartItem) => cartItem._id === item._id)) {
-      const selectedCartItem = state.cartItems.find(
+    if (state.currentInvoice.cartItems.length === 0) {
+      dispatch(addItem(item));
+      dispatch(calculateTotal())
+    } else if (
+      state.currentInvoice.cartItems.some(
+        (cartItem) => cartItem._id === item._id
+      )
+    ) {
+      const selectedCartItem = state.currentInvoice.cartItems.find(
         (cartItem) => cartItem._id === item._id
       );
-      const newQuantity = selectedCartItem.quantity + 1;
-      const updateQuantityData = { id: item._id, newValue: newQuantity };
+      const updateQuantityData = {
+        id: item._id,
+        newValue: selectedCartItem.quantity + 1,
+      };
       dispatch(updateQuantity(updateQuantityData));
-      dispatch(calculateTotal());
+      dispatch(calculateTotal())
     } else {
       dispatch(addItem(item));
-      dispatch(calculateTotal());
+      dispatch(calculateTotal())
     }
   };
+
   const handleSerialInput = (e) => {
     if (e.keyCode === 13) {
       const selectedCartItem = state.stockItems.find(

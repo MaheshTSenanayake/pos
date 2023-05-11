@@ -3,7 +3,10 @@ import { AddCircleOutline, RemoveCircle } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateStockQuantity } from "../action/cartAction";
+import {
+  calculateTotal,
+  updateQuantity,
+} from "../../store/action/cartAction";
 
 const useStyles = styled((theme) => ({
   root: {
@@ -13,29 +16,32 @@ const useStyles = styled((theme) => ({
   },
 }));
 
-function QuantityTextField({ item, onQuantityChange }) {
-  const state = useSelector((state) => state.cartItems);
+function QuantityTextField({ item }) {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
-  const selectedCartItem = state.find((cartItem) => cartItem._id === item._id);
-  const quantity = selectedCartItem ? selectedCartItem.quantity : 0;
+  const selectedInvoiceCartItem = state.currentInvoice.cartItems.find(
+    (cartItem) => cartItem._id === item._id
+  );
+  const quantity = selectedInvoiceCartItem.quantity;
 
   const handleIncrease = () => {
     const updateQuantityData = { id: item._id, newValue: quantity + 1 };
-    onQuantityChange(updateQuantityData);
-    dispatch(updateStockQuantity(item._id, "decrease"));
+    dispatch(updateQuantity(updateQuantityData));
+    dispatch(calculateTotal());
   };
 
   const handleDecrease = () => {
     const updateQuantityData = { id: item._id, newValue: quantity - 1 };
-    onQuantityChange(updateQuantityData);
-    dispatch(updateStockQuantity(item._id, "increase"));
+    dispatch(updateQuantity(updateQuantityData));
+    dispatch(calculateTotal());
   };
 
   const handleTextfieldValueChange = (e) => {
     const newValue = parseInt(e.target.value) || 0;
-    onQuantityChange(item._id, newValue);
-    
+    const updateQuantityData = { id: item._id, newValue };
+    dispatch(updateQuantity(updateQuantityData));
+    dispatch(calculateTotal());
   };
 
   const classes = useStyles();

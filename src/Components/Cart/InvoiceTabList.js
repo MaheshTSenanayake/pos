@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, InputAdornment, Tab, Tabs, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { loadInvoiceData } from "../../action/cartAction";
+import { loadInvoiceData } from "../../store/action/cartAction";
 
 const InvoiceTabList = () => {
   const [activeTab, setActiveTab] = useState(0);

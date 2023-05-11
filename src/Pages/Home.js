@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getStockItems } from "../action/cartAction";
-import ThreeColumnLayout from "../Components/Layout/ThreeColumnLayout";
+import PosSystemHomeLayout from "../Components/Layout/PosSystemHomeLayout";
+import { getStockItems } from "../store/action/cartAction";
 
 const data = require("../data.json");
 
@@ -12,8 +12,8 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <div>
-      <ThreeColumnLayout />
+    <div style={{ backgroundColor: "#1976d23d" }}>
+      <PosSystemHomeLayout />
     </div>
   );
 }

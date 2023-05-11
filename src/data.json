@@ -16,7 +16,7 @@
       "category": "Soft Drink",
       "image": "./image/image.jpeg",
       "sereal": "1",
-      "stockQuantity": 10,
+      "stockQuantity": 100,
       "standedPrice": 1
     },
     {
