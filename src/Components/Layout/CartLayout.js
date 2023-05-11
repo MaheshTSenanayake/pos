@@ -8,17 +8,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import QuantityTextField from "../QuantityTextField";
 import {
   calculateTotal,
   changeCurrency,
   clearCart,
   deleteItem,
   updateQuantity,
-} from "../../action/cartAction";
+} from "../../store/action/cartAction.js";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import { useState } from "react";
+import QuantityTextField from "../TextFields/QuantityTextField.js";
 
 function CartLayout() {
   const [currency, setCurrency] = useState("USD");

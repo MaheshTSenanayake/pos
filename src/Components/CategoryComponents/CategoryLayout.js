@@ -2,8 +2,6 @@ import styled from "@emotion/styled";
 import { Button, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 
-const data = require("../../data.json");
-
 const useStyle = styled((theme) => ({
   root: {
     flexGrow: 1,
@@ -19,7 +17,7 @@ function CategoryLayout() {
   const state = useSelector((state) => state);
   const classes = useStyle();
   const checkInvocelist = () => {
-    console.log(state);
+    console.log(state.currentInvoice);
   };
   return (
     <div className={classes.root}>
@@ -40,7 +38,7 @@ function CategoryLayout() {
             All
           </Button>
         </Grid>
-        {data.category.map((category, index) => (
+        {state.category.map((category, index) => (
           <Grid key={category._id} item xs={12}>
             <Button
               sx={{
