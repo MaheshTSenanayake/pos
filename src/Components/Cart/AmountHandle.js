@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment, TextField } from "@mui/material";
-import { setAmountRecieve } from "../../store/action/cartAction.js";
+import { setAmountRecieve } from "../../store/action/cartAction";
 import { useState, useEffect } from "react";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -19,14 +19,14 @@ const Item = styled(Paper)(({ theme }) => ({
 function AmountHandle() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [amountRecieved, setAmountReceived] = useState("");
+  const [amountRecieved, setAmountReceived] = useState(0);
 
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    const initialAmountReceived = state.currentInvoice?.recieveAmount || "";
-    setAmountReceived(initialAmountReceived);
-  }, [state.currentInvoice?.recieveAmount]);
+    const initialAmountReceived = state.currentInvoice?.recieveAmount || 0;
+    dispatch(setAmountRecieve(initialAmountReceived));
+  }, [state.currentInvoice?.recieveAmount, dispatch]);
 
   const handleAmountReceivedValue = (e) => {
     const amountRecieved = e.target.value;
@@ -46,7 +46,7 @@ function AmountHandle() {
   }; */
 
   return (
-    <Box sx={{ flexGrow: 1, marginTop: "2rem" }}>
+    <Box sx={{ flexGrow: 1, marginTop: "5px" }}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Item>
@@ -81,6 +81,7 @@ function AmountHandle() {
               <Grid item xs={8}>
                 <TextField
                   value={amountRecieved}
+                  onClick={() => setAmountReceived("")}
                   onChange={handleAmountReceivedValue}
                   variant="outlined"
                   InputProps={{
@@ -96,7 +97,7 @@ function AmountHandle() {
           </Item>
         </Grid>
         <Grid item xs={4}>
-          <Item sx={{ height: "100%" }}>
+          <Item>
             <Grid container direction="column" alignItems="center">
               <Grid item>Balane</Grid>
               <Grid item>

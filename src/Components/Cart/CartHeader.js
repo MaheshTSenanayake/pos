@@ -1,22 +1,32 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCurrency } from "../../store/action/cartAction";
+import {
+  changeCurrency,
+  createOderNumber,
+} from "../../store/action/cartAction";
 
 const CartHeader = () => {
   const dispatch = useDispatch();
   const [currency, setCurrency] = useState("USD");
   const state = useSelector((state) => state);
+
+  const handleCreateNewInvoice = () => {
+    dispatch(createOderNumber());
+  };
   return (
     <Grid
       container
       alignItems="center"
       justifyContent="space-between"
-      sx={{ p: 2, bgcolor:"#ffffff"}}
+      sx={{ p: 2, bgcolor: "#ffffff" }}
     >
       <Grid item xs={2}>
-        <Typography variant="p">Order #{state.orderNumber}</Typography>
+        <Typography variant="p">
+          Order #
+          {state.isNewOrder ? state.lastOderNumber : state.orderNumber}
+        </Typography>
       </Grid>
       <Grid item xs={5.5} sx={{ textAlign: "center" }}>
         <TextField
@@ -30,14 +40,16 @@ const CartHeader = () => {
         <Button
           sx={{
             textAlign: "center",
-            bgcolor: "#f35151",
+            bgcolor: "#0021c5",
             borderRadius: 1,
+            width: "120px",
           }}
           variant="contained"
           size="small"
-          startIcon={<ClearIcon />}
+          startIcon={<AddBoxIcon />}
+          onClick={handleCreateNewInvoice}
         >
-          Clear Cart
+          New
         </Button>
       </Grid>
       <Grid item xs={1.5} sx={{ textAlign: "right" }}>

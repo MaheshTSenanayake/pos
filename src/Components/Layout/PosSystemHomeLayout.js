@@ -5,6 +5,7 @@ import ItemLayout from "../StockItems/ItemLayout";
 import ItemTable from "../Cart/ItemTable";
 import AmountHandle from "../Cart/AmountHandle";
 import InvoiceSubmitionBuutons from "../ActionButtons/InvoiceSubmitionButtons";
+import InvoiceTabList from "../Cart/InvoiceTabList";
 
 function PosSystemHomeLayout() {
   return (
@@ -14,6 +15,7 @@ function PosSystemHomeLayout() {
         <ItemTable />
         <AmountHandle />
         <InvoiceSubmitionBuutons />
+        <InvoiceTabList />
       </Grid>
       <Grid item xs={1}>
         <CategoryLayout />

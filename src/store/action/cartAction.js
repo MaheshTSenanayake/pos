@@ -3,12 +3,13 @@ import {
   CALCULATE_TOTAL,
   CHANGE_CURRENCY,
   CLEAR_CART,
+  CREATE_NEW_INVOICE,
   CREATE_ORDER_NUMBER,
   GET_STOCK_ITEMS,
   LOAD_INVOICE_DATA,
   PRINT_BILL,
   REMOVE_FROM_CART,
-  SAVE_iNVOICE_DATA,
+  SAVE_INVOICE_DATA,
   SET_AMOUNT_RECIEVE,
   UPDATE_QUANTITY,
 } from "./types";
@@ -49,22 +50,33 @@ const setAmountRecieve = (amount) => {
     payload: amount,
   };
 };
-const createOderNumber = () => {
-  return {
-    type: CREATE_ORDER_NUMBER,
-  };
-};
 const changeCurrency = (currency) => {
   return {
     type: CHANGE_CURRENCY,
     payload: currency,
   };
 };
-
-const saveDraftInvoice = (invoiceData) => {
+const clearCart = (cartItems) => {
   return {
-    type: SAVE_iNVOICE_DATA,
+    type: CLEAR_CART,
+    payload: cartItems,
+  };
+};
+const createOderNumber = () => {
+  return {
+    type: CREATE_ORDER_NUMBER,
+  };
+};
+const createNewInvoice = (invoiceData) => {
+  return {
+    type: CREATE_NEW_INVOICE,
     payload: invoiceData,
+  };
+};
+const saveDraftInvoice = (invoiceStatus) => {
+  return {
+    type: SAVE_INVOICE_DATA,
+    payload: invoiceStatus,
   };
 };
 const loadInvoiceData = (invoiceData) => {
@@ -78,23 +90,19 @@ const printBill = () => {
     type: PRINT_BILL,
   };
 };
-const clearCart = () => {
-  return {
-    type: CLEAR_CART,
-  };
-};
 
 export {
+  getStockItems,
   addItem,
-  deleteItem,
-  printBill,
   updateQuantity,
-  clearCart,
+  deleteItem,
   calculateTotal,
+  clearCart,
+  setAmountRecieve,
+  createNewInvoice,
+  printBill,
   createOderNumber,
   changeCurrency,
-  getStockItems,
   saveDraftInvoice,
   loadInvoiceData,
-  setAmountRecieve,
 };

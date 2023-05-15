@@ -2,50 +2,32 @@ import { Button, Modal } from "@mui/material";
 import { Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { saveDraftInvoice } from "../../store/action/cartAction";
 import Invoice from "../Layout/print/Invoice";
-/* import moment from "moment"; */
 
 const InvoiceSubmitionBuutons = () => {
-  /* const now = moment();
-  const date = now.format("YYYY/MM/DD");
-  const time = now.format("hh:mm:ss A"); */
-
   const [pdfView, setPdfView] = useState(false);
-
-  const printBill = (invoiceData) => {
-    /* invoiceData.invoiceStatus = { status: "Complete", payMethod: "Complete" }; 
-    dispatch(saveDraftInvoice(invoiceData));*/
-    setPdfView(true);
-  };
+  const dispatch = useDispatch();
 
   const handlePdfClose = () => {
     setPdfView(false);
   };
 
-  /* const saveInvoiceData = (invoiceData) => {
-    invoiceData.invoiceStatus = { status: "Drafts", payMethod: "notDefine" };
-    dispatch(saveDraftInvoice(invoiceData));
-    dispatch(createOderNumber());
+  
+  const saveCreditInvoice = () => {
+    const invoiceStatus = { status: "Complete", payMethod: "Credit" };
+    dispatch(saveDraftInvoice(invoiceStatus));
   };
-  const saveCreditInvoice = (invoiceData) => {
-    invoiceData.invoiceStatus = { status: "Complete", payMethod: "Credit" };
-    dispatch(saveDraftInvoice(invoiceData));
-    dispatch(createOderNumber());
-  }; */
-
-  /*  
-
-  const invoiceData = {
-    invoiceId: state.orderNumber,
-    date: date,
-    time: time,
-    customerId: 1,
-    currency: state.currency,
-    purchaseItems: state.currentInvoice.cartItems,
-    total: state.currency === "LKR" ? state.total.lkr : state.total.usd,
-    amountRecieved: amountRecieved,
-    balance: balance,
-  }; */
+  const saveInvoiceHandler = () => {
+    const invoiceStatus = { status: "Draft", payMethod: "Credit" };
+    dispatch(saveDraftInvoice(invoiceStatus));
+  };
+  const printBill = () => {
+    const invoiceStatus = { status: "Complete", payMethod: "Complete" };
+    dispatch(saveDraftInvoice(invoiceStatus));
+    setPdfView(true);
+  };
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -60,13 +42,12 @@ const InvoiceSubmitionBuutons = () => {
         <Grid item xs={12}>
           <Item sx={{ textAlign: "center" }}>
             <Button
-              size="small"
               sx={{
                 textAlign: "center",
                 bgcolor: "#7ccb41",
                 borderRadius: 1,
                 margin: 1,
-                width: { xs: 110 },
+                width: { xs: 150 },
               }}
               variant="contained"
               onClick={() => printBill()}
@@ -74,46 +55,30 @@ const InvoiceSubmitionBuutons = () => {
               Pay
             </Button>
             <Button
-              size="small"
               sx={{
                 textAlign: "center",
                 bgcolor: "#00a4bf",
                 borderRadius: 1,
                 margin: 1,
-                width: { xs: 110 },
+                width: { xs: 150 },
               }}
               variant="contained"
-              /* onClick={() => saveInvoiceData(invoiceData)} */
+              onClick={saveInvoiceHandler}
             >
               Save
             </Button>
             <Button
-              size="small"
               sx={{
                 textAlign: "center",
                 bgcolor: "#9b9b9b",
                 borderRadius: 1,
                 margin: 1,
-                width: { xs: 110 },
+                width: { xs: 150 },
               }}
               variant="contained"
-              /* onClick={() => saveCreditInvoice(invoiceData)} */
+              onClick={() => saveCreditInvoice()}
             >
               Credit Sale
-            </Button>
-            <Button
-              size="small"
-              sx={{
-                textAlign: "center",
-                bgcolor: "#9b9b9b",
-                borderRadius: 1,
-                margin: 1,
-                width: { xs: 110 },
-              }}
-              variant="contained"
-              /* onClick={() => saveCreditInvoice(invoiceData)} */
-            >
-              New
             </Button>
           </Item>
         </Grid>

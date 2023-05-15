@@ -3,11 +3,12 @@ import {
   CALCULATE_TOTAL,
   CHANGE_CURRENCY,
   CLEAR_CART,
+  CREATE_NEW_INVOICE,
   CREATE_ORDER_NUMBER,
   GET_STOCK_ITEMS,
   LOAD_INVOICE_DATA,
   REMOVE_FROM_CART,
-  SAVE_iNVOICE_DATA,
+  SAVE_INVOICE_DATA,
   SET_AMOUNT_RECIEVE,
   UPDATE_QUANTITY,
 } from "../action/types";
@@ -16,6 +17,7 @@ const initialState = {
   currency: "LKR",
   lastOderNumber: 0,
   orderNumber: 1,
+  isNewOrder: false,
   stockItems: [],
   category: [],
   currentInvoice: {
@@ -128,49 +130,88 @@ const cartReducer = (state = initialState, action) => {
         },
       };
     case CLEAR_CART:
+      const updatedStockItemsByClear = state.stockItems.map((stockItem) => {
+        const correspondingCartItem = action.payload.find(
+          (cartItem) => cartItem._id === stockItem._id
+        );
+        if (correspondingCartItem) {
+          return {
+            ...stockItem,
+            stockQuantity:
+              stockItem.stockQuantity + correspondingCartItem.quantity,
+          };
+        }
+        return stockItem;
+      });
       return {
         ...state,
-        cartItems: [],
-      };
-    case CREATE_ORDER_NUMBER:
-      const newOrderNumber = state.orderNumber + 1;
-      return {
-        ...state,
-        orderNumber: newOrderNumber,
+        stockItems: updatedStockItemsByClear,
+        currentInvoice: {
+          ...state.currentInvoice,
+          cartItems: [],
+          total: { lkr: 0, usd: 0 },
+        },
       };
     case CHANGE_CURRENCY:
       return {
         ...state,
         currency: action.payload,
       };
-    case SAVE_iNVOICE_DATA:
+    case CREATE_ORDER_NUMBER:
+      return {
+        ...state,
+        lastOderNumber: state.lastOderNumber + 1,
+        isNewOrder: true,
+      };
+    case CREATE_NEW_INVOICE:
+      return {
+        ...state,
+        isNewOrder: false,
+        orderNumber: state.lastOderNumber,
+        currentInvoice: {
+          ...state.currentInvoice,
+          cutomerId: action.payload.customerId,
+          date: action.payload.date,
+          invoiceId: action.payload.invoiceId,
+          time: action.payload.time,
+        },
+      };
+    case SAVE_INVOICE_DATA:
+      const newInvoice = {
+        ...state.currentInvoice,
+        invoiceStatus: action.payload,
+      };
       if (
         state.invoiceList.some(
-          (invoiceItem) => invoiceItem.invoiceId === action.payload.invoiceId
+          (invoiceItem) =>
+            invoiceItem.invoiceId === state.currentInvoice.invoiceId
         )
       ) {
         const newInvoiceList = state.invoiceList.filter(
-          (invoiceItem) => invoiceItem.invoiceId !== action.payload.invoiceId
+          (invoiceItem) =>
+            invoiceItem.invoiceId !== state.currentInvoice.invoiceId
         );
         return {
           ...state,
-          invoiceList: [...newInvoiceList, action.payload],
+          invoiceList: [...newInvoiceList, newInvoice],
         };
       } else {
         return {
           ...state,
-          invoiceList: [...state.invoiceList, action.payload],
+          invoiceList: [...state.invoiceList, newInvoice],
+          currentInvoice: {
+            cartItems: [],
+            total: { lkr: 0, usd: 0 },
+          },
         };
       }
-
     case LOAD_INVOICE_DATA:
       console.log(action.payload);
       return {
         ...state,
+        currentInvoice: action.payload,
         orderNumber: action.payload.invoiceId,
-        cartItems: action.payload.purchaseItems,
-        total: action.payload.total,
-        currency: action.payload.currency,
+        isNewOrder: false,
       };
     default:
       return state;

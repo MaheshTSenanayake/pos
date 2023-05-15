@@ -5,9 +5,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   addItem,
   calculateTotal,
+  createNewInvoice,
   updateQuantity,
 } from "../../store/action/cartAction.js";
 import MediaCard from "./MediaCard";
+import moment from "moment";
 
 const useStyle = styled((theme) => ({
   root: {
@@ -24,13 +26,27 @@ function ItemLayout() {
   const state = useSelector((state) => state);
   const classes = useStyle();
   const dispatch = useDispatch();
+  const now = moment();
+
+  const date = now.format("YYYY/MM/DD");
+  const time = now.format("hh:mm:ss A");
+
+  const invoiceData = {
+    invoiceId: state.lastOderNumber,
+    date: date,
+    time: time,
+    customerId: 1,
+  };
 
   const height = window.innerHeight;
 
   const handleAddToCart = (item) => {
+    if (state.isNewOrder) {
+      dispatch(createNewInvoice(invoiceData));
+    }
     if (state.currentInvoice.cartItems.length === 0) {
       dispatch(addItem(item));
-      dispatch(calculateTotal())
+      dispatch(calculateTotal());
     } else if (
       state.currentInvoice.cartItems.some(
         (cartItem) => cartItem._id === item._id
@@ -44,10 +60,10 @@ function ItemLayout() {
         newValue: selectedCartItem.quantity + 1,
       };
       dispatch(updateQuantity(updateQuantityData));
-      dispatch(calculateTotal())
+      dispatch(calculateTotal());
     } else {
       dispatch(addItem(item));
-      dispatch(calculateTotal())
+      dispatch(calculateTotal());
     }
   };
 
