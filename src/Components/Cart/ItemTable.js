@@ -10,7 +10,11 @@ import {
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import QuantityTextField from "../TextFields/QuantityTextField";
 import { useDispatch, useSelector } from "react-redux";
-import { calculateTotal, deleteItem } from "../../store/action/cartAction";
+import {
+  calculateTotal,
+  clearCart,
+  deleteItem,
+} from "../../store/action/cartAction";
 
 const ItemTable = () => {
   const state = useSelector((state) => state);
@@ -19,6 +23,10 @@ const ItemTable = () => {
   const handleRemoveItemFromCart = (id) => {
     dispatch(deleteItem(id));
     dispatch(calculateTotal());
+  };
+
+  const HandleClearCart = () => {
+    dispatch(clearCart(state.currentInvoice.cartItems));
   };
 
   return (
@@ -31,7 +39,16 @@ const ItemTable = () => {
               <TableCell align="center">Quantity</TableCell>
               <TableCell align="left">UPrice&nbsp;({state.currency})</TableCell>
               <TableCell align="left">Price&nbsp;({state.currency})</TableCell>
-              <TableCell align="left"></TableCell>
+              <TableCell align="left">
+                {state.currentInvoice.cartItems.length !== 0 ? (
+                  <HighlightOffRoundedIcon
+                    sx={{ color: "#f35151" }}
+                    onClick={() => HandleClearCart()}
+                  />
+                ) : (
+                  ""
+                )}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={{ maxHeight: "300px", overflow: "auto" }}>

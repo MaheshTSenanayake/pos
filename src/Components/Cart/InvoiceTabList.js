@@ -23,7 +23,7 @@ const InvoiceTabList = () => {
   };
 
   return (
-    <Grid container alignItems="center" justifyContent="center">
+    <Grid container alignItems="center" justifyContent="center" bgcolor={"#ffffff"}>
       <Grid item xs={12} md={8}>
         <Tabs
           value={activeTab}

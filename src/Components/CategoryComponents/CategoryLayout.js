@@ -17,7 +17,7 @@ function CategoryLayout() {
   const state = useSelector((state) => state);
   const classes = useStyle();
   const checkInvocelist = () => {
-    console.log(state.currentInvoice);
+    console.log(state);
   };
   return (
     <div className={classes.root}>
