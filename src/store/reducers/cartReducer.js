@@ -15,7 +15,7 @@ import {
 
 const initialState = {
   currency: "LKR",
-  lastOderNumber: 0,
+  lastOderNumber: 1,
   orderNumber: 1,
   isNewOrder: false,
   stockItems: [],
@@ -158,11 +158,24 @@ const cartReducer = (state = initialState, action) => {
         currency: action.payload,
       };
     case CREATE_ORDER_NUMBER:
-      return {
-        ...state,
-        lastOderNumber: state.lastOderNumber + 1,
-        isNewOrder: true,
-      };
+      const newOderNumber = state.lastOderNumber + 1;
+      if (
+        state.invoiceList.some(
+          (invoice) => invoice.invoiceId === state.lastOderNumber
+        )
+      ) {
+        return {
+          ...state,
+          lastOderNumber: newOderNumber,
+          isNewOrder: true,
+        };
+      } else {
+        return {
+          ...state,
+          isNewOrder: true,
+        };
+      }
+
     case CREATE_NEW_INVOICE:
       return {
         ...state,
@@ -177,10 +190,25 @@ const cartReducer = (state = initialState, action) => {
         },
       };
     case SAVE_INVOICE_DATA:
-      const newInvoice = {
-        ...state.currentInvoice,
-        invoiceStatus: action.payload,
-      };
+      const invoiceStatus = action.payload.invoiceStatus;
+      let newInvoice = {};
+
+      if (action.payload.invoiceStatus.payMethod === "Card") {
+        const cardDetails = action.payload;
+        delete cardDetails.invoiceStatus;
+        console.log(cardDetails);
+        newInvoice = {
+          ...state.currentInvoice,
+          cardDetails: cardDetails,
+          invoiceStatus: invoiceStatus,
+        };
+      } else {
+        newInvoice = {
+          ...state.currentInvoice,
+          invoiceStatus: invoiceStatus,
+        };
+      }
+
       if (
         state.invoiceList.some(
           (invoiceItem) =>
@@ -206,7 +234,6 @@ const cartReducer = (state = initialState, action) => {
         };
       }
     case LOAD_INVOICE_DATA:
-      console.log(action.payload);
       return {
         ...state,
         currentInvoice: action.payload,

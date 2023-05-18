@@ -5,28 +5,51 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { saveDraftInvoice } from "../../store/action/cartAction";
 import Invoice from "../Layout/print/Invoice";
+import CardPayment from "../PamentMethods/CardPayment";
+import MultiplePay from "../PamentMethods/MultiplePay";
 
 const InvoiceSubmitionBuutons = () => {
   const [pdfView, setPdfView] = useState(false);
+  const [cardPay, setCardPay] = useState(false);
+  const [multiplePay, setMultiplePay] = useState(false);
   const dispatch = useDispatch();
 
   const handlePdfClose = () => {
     setPdfView(false);
   };
 
-  
   const saveCreditInvoice = () => {
-    const invoiceStatus = { status: "Complete", payMethod: "Credit" };
-    dispatch(saveDraftInvoice(invoiceStatus));
+    const invoiceDetails = {
+      invoiceStatus: { status: "Complete", payMethod: "Credit" },
+    };
+    dispatch(saveDraftInvoice(invoiceDetails));
   };
   const saveInvoiceHandler = () => {
-    const invoiceStatus = { status: "Draft", payMethod: "Credit" };
-    dispatch(saveDraftInvoice(invoiceStatus));
+    const invoiceDetails = {
+      invoiceStatus: { status: "Draft", payMethod: "Credit" },
+    };
+    dispatch(saveDraftInvoice(invoiceDetails));
   };
   const printBill = () => {
-    const invoiceStatus = { status: "Complete", payMethod: "Complete" };
-    dispatch(saveDraftInvoice(invoiceStatus));
+    const invoiceDetails = {
+      invoiceStatus: { status: "Complete", payMethod: "Complete" },
+    };
+    dispatch(saveDraftInvoice(invoiceDetails));
     setPdfView(true);
+  };
+  const cardPayHandler = () => {
+    setCardPay(true);
+  };
+
+  const handleCardDetailsSubmit = () => {
+    // Close the modal
+    setCardPay(false);
+  };
+  const handleMultiplePayDetailsSubmit = () => {
+    setMultiplePay(false);
+  };
+  const multiplePayHandler = () => {
+    setMultiplePay(true);
   };
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -53,6 +76,32 @@ const InvoiceSubmitionBuutons = () => {
               onClick={() => printBill()}
             >
               Pay
+            </Button>
+            <Button
+              sx={{
+                textAlign: "center",
+                bgcolor: "#7ccb41",
+                borderRadius: 1,
+                margin: 1,
+                width: { xs: 150 },
+              }}
+              variant="contained"
+              onClick={cardPayHandler}
+            >
+              Card
+            </Button>
+            <Button
+              sx={{
+                textAlign: "center",
+                bgcolor: "#7ccb41",
+                borderRadius: 1,
+                margin: 1,
+                width: { xs: 150 },
+              }}
+              variant="contained"
+              onClick={multiplePayHandler}
+            >
+              Multiple Pay
             </Button>
             <Button
               sx={{
@@ -84,6 +133,7 @@ const InvoiceSubmitionBuutons = () => {
         </Grid>
       }
       {
+        //Modle that open for open print view
         <Modal open={pdfView} onClose={handlePdfClose}>
           <div
             style={{
@@ -93,6 +143,38 @@ const InvoiceSubmitionBuutons = () => {
             }}
           >
             <Invoice />
+          </div>
+        </Modal>
+      }
+      {
+        //Modle that open for Enter card details
+        <Modal open={cardPay}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+            }}
+          >
+            <CardPayment handleCardDetailsSubmit={handleCardDetailsSubmit} />
+          </div>
+        </Modal>
+      }
+      {
+        //Modle that open for Multiple Pay methods
+        <Modal open={multiplePay}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+            }}
+          >
+            <MultiplePay
+              handleMultiplePayDetailsSubmit={handleMultiplePayDetailsSubmit}
+            />
           </div>
         </Modal>
       }
