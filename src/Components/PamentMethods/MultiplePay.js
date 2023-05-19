@@ -1,126 +1,138 @@
-import {
-  Grid,
-  IconButton,
-  TextField,
-  MenuItem,
-  Button,
-  TextareaAutosize,
-} from "@mui/material";
+import { Button, Grid, IconButton, MenuItem, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import MultiplePayByCheque from "./MultiplePayByCheque";
+import React, { useState } from "react";
+import MultiplePayByAdvance from "./MultiplePayByAdvance";
+import MultiplePayByCash from "./MultiplePayByCash";
+import MultiplePayByCard from "./MultiplePayByCard";
+import MultiplePayByBankTransfer from "./MultiplePayByBankTransfer";
 
 const MultiplePay = (props) => {
-  const [cardNumber, setCardNumber] = useState("");
-  const handleCardNumberChange = (e) => {
-    setCardNumber(e.target.value);
-  };
   const { handleMultiplePayDetailsSubmit } = props;
+  const [multiplePyamentList, setMultiplePyamentList] = useState([]);
+
+  const handlePaymentMethodChange = (index, value) => {
+    setMultiplePyamentList((prevMethods) => {
+      const updatedMethods = [...prevMethods];
+      updatedMethods[index].paymentMethod = value;
+      return updatedMethods;
+    });
+  };
+
+  const handleAmountChange = (index, value) => {
+    setMultiplePyamentList((prevMethods) => {
+      const updatedMethods = [...prevMethods];
+      updatedMethods[index].amount = value;
+      return updatedMethods;
+    });
+  };
+
+  const handleAddPaymentMethods = () => {
+    setMultiplePyamentList((prevMethods) => [
+      ...prevMethods,
+      { paymentMethod: "", amount: "" },
+    ]);
+  };
+
+  const removePyamentMethodHandler = (index) => {
+    const updatedPaymentList = [...multiplePyamentList];
+    updatedPaymentList.splice(index, 1);
+    setMultiplePyamentList(updatedPaymentList);
+  };
   return (
-    <div>
-      <Grid container justifyContent="center" spacing={2}>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              backgroundColor: "white",
-              padding: "20px",
-            }}
-          >
-            <IconButton
-              style={{ position: "absolute", top: 10, right: 10 }}
-              onClick={handleMultiplePayDetailsSubmit}
-            >
+    <div
+      style={{
+        justifyContent: "center",
+        width: "80%",
+        maxHeight: "80vh",
+        overflow: "auto",
+      }}
+    >
+      <Grid container justifyContent="center" spacing={2} bgcolor="#ffffff">
+        <Grid container item xs={12} direction="row" alignItems="center">
+          <Grid item xs={10} paddingLeft="50px">
+            <h1>Multiple Payment</h1>
+          </Grid>
+          <Grid item xs={2} textAlign="right" paddingRight="50px">
+            <IconButton onClick={handleMultiplePayDetailsSubmit}>
               <CloseIcon />
             </IconButton>
-            <Grid item xs={12}>
-              <h1>Multiple Payment</h1>
-            </Grid>
-            <Grid item xs={12}>
-              <p>Advance Balance:</p>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  label="Amount"
-                  value={cardNumber}
-                  onChange={handleCardNumberChange}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Payment Method"
-                  /* value={cardHolderName} */ /* onChange={handleCardHolderNameChange}  */ fullWidth
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  label="Card Number"
-                  value={cardNumber}
-                  onChange={handleCardNumberChange}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  label="Card holder name"
-                  /* value={cardHolderName} */ /* onChange={handleCardHolderNameChange}  */ fullWidth
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  label="Card Transaction No."
-                  /* value={cardTransactionNo} onChange={handleCardTransactionNoChange} */ fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  select
-                  label="Card Type"
-                  /* value={cardType} onChange={handleCardTypeChange} */ fullWidth
-                >
-                  <MenuItem value="Visa">Visa</MenuItem>
-                  <MenuItem value="Mastercard">Mastercard</MenuItem>
-                  <MenuItem value="American Express">American Express</MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={6} md={3}>
-                <TextField
-                  label="Month"
-                  /* value={expiryMonth} onChange={handleExpiryMonthChange}  */ fullWidth
-                />
-              </Grid>
-              <Grid item xs={6} md={3}>
-                <TextField
-                  label="Year"
-                  /* value={expiryYear} onChange={handleExpiryYearChange} */ fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <div className="form-group">
-                  <label htmlFor="payment_note">payment_note</label>
-                  <TextareaAutosize
-                    className="form-control"
-                    placeholder="Remarks"
-                    id="payment_note"
-                    name="payment[0][remarks]"
-                    rows={3}
-                  />
-                </div>
-              </Grid>
+          </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={9} textAlign="center">
+            <Grid container item xs={12} justifyContent="center">
+              {multiplePyamentList.map((method, index) => (
+                <Grid container item xs={12} key={index}>
+                  <Grid item xs={5} padding="10px">
+                    <TextField
+                      label="Amount"
+                      fullWidth
+                      value={method.amount}
+                      onChange={(e) =>
+                        handleAmountChange(index, e.target.value)
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={5} padding="10px">
+                    <TextField
+                      select
+                      label="Payment Method"
+                      value={method.paymentMethod}
+                      onChange={(e) =>
+                        handlePaymentMethodChange(index, e.target.value)
+                      }
+                      fullWidth
+                    >
+                      <MenuItem value="Advance">Advance</MenuItem>
+                      <MenuItem value="Cash">Cash</MenuItem>
+                      <MenuItem value="Cheque">Cheque</MenuItem>
+                      <MenuItem value="Card">Card</MenuItem>
+                      <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={2} padding="10px">
+                    <IconButton
+                      onClick={() => removePyamentMethodHandler(index)}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {method.paymentMethod === "Advance" && (
+                      <MultiplePayByAdvance />
+                    )}
+                    {method.paymentMethod === "Cash" && <MultiplePayByCash />}
+                    {method.paymentMethod === "Cheque" && (
+                      <MultiplePayByCheque />
+                    )}
+                    {method.paymentMethod === "Card" && <MultiplePayByCard />}
+                    {method.paymentMethod === "Bank Transfer" && (
+                      <MultiplePayByBankTransfer />
+                    )}
+                  </Grid>
+                </Grid>
+              ))}
+
               <Grid item xs={12}>
                 <Button
+                  sx={{
+                    textAlign: "center",
+                    bgcolor: "#05abeb",
+                    borderRadius: 1,
+                    margin: 1,
+                  }}
                   variant="contained"
-                  color="primary"
-                  
-                  fullWidth
+                  onClick={handleAddPaymentMethods}
                 >
-                  Submit
+                  Add Pay Method
                 </Button>
               </Grid>
             </Grid>
-          </div>
+          </Grid>
+          <Grid item xs={3}>
+            Total
+          </Grid>
         </Grid>
       </Grid>
     </div>
