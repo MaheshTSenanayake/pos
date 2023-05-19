@@ -6,10 +6,13 @@ import MultiplePayByAdvance from "./MultiplePayByAdvance";
 import MultiplePayByCash from "./MultiplePayByCash";
 import MultiplePayByCard from "./MultiplePayByCard";
 import MultiplePayByBankTransfer from "./MultiplePayByBankTransfer";
+import { useDispatch } from "react-redux";
+import { saveDraftInvoice } from "../../store/action/cartAction";
 
 const MultiplePay = (props) => {
   const { handleMultiplePayDetailsSubmit } = props;
   const [multiplePyamentList, setMultiplePyamentList] = useState([]);
+  const dispatch = useDispatch();
 
   const handlePaymentMethodChange = (index, value) => {
     setMultiplePyamentList((prevMethods) => {
@@ -38,6 +41,15 @@ const MultiplePay = (props) => {
     const updatedPaymentList = [...multiplePyamentList];
     updatedPaymentList.splice(index, 1);
     setMultiplePyamentList(updatedPaymentList);
+  };
+  const methodDetailsSavingHandler = (data) => {
+    const selectedObject = multiplePyamentList[data.methodListKey];
+    selectedObject.methodDetails = data.methodDetails;
+    const paymentDetails = {
+      multiplePyamentList: multiplePyamentList,
+      invoiceStatus: { status: "Complete", payMethod: "Multiple" },
+    };
+    dispatch(saveDraftInvoice(paymentDetails));
   };
   return (
     <div
@@ -100,15 +112,34 @@ const MultiplePay = (props) => {
                   </Grid>
                   <Grid item xs={12}>
                     {method.paymentMethod === "Advance" && (
-                      <MultiplePayByAdvance />
+                      <MultiplePayByAdvance
+                        methodKey={index}
+                        sendAdvanceData={methodDetailsSavingHandler}
+                      />
                     )}
-                    {method.paymentMethod === "Cash" && <MultiplePayByCash />}
+                    {method.paymentMethod === "Cash" && (
+                      <MultiplePayByCash
+                        methodKey={index}
+                        sendAdvanceData={methodDetailsSavingHandler}
+                      />
+                    )}
                     {method.paymentMethod === "Cheque" && (
-                      <MultiplePayByCheque />
+                      <MultiplePayByCheque
+                        methodKey={index}
+                        sendAdvanceData={methodDetailsSavingHandler}
+                      />
                     )}
-                    {method.paymentMethod === "Card" && <MultiplePayByCard />}
+                    {method.paymentMethod === "Card" && (
+                      <MultiplePayByCard
+                        methodKey={index}
+                        sendAdvanceData={methodDetailsSavingHandler}
+                      />
+                    )}
                     {method.paymentMethod === "Bank Transfer" && (
-                      <MultiplePayByBankTransfer />
+                      <MultiplePayByBankTransfer
+                        methodKey={index}
+                        sendAdvanceData={methodDetailsSavingHandler}
+                      />
                     )}
                   </Grid>
                 </Grid>

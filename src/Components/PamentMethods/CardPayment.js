@@ -42,7 +42,6 @@ const CardPayment = (props) => {
     invoiceStatus: { status: "Complete", payMethod: "Card" },
   };
   const submitHandler = () => {
-    console.log(cardDetails);
     dispatch(saveDraftInvoice(cardDetails));
     handleCardDetailsSubmit();
   };

@@ -196,10 +196,16 @@ const cartReducer = (state = initialState, action) => {
       if (action.payload.invoiceStatus.payMethod === "Card") {
         const cardDetails = action.payload;
         delete cardDetails.invoiceStatus;
-        console.log(cardDetails);
         newInvoice = {
           ...state.currentInvoice,
           cardDetails: cardDetails,
+          invoiceStatus: invoiceStatus,
+        };
+      } else if (action.payload.invoiceStatus.payMethod === "Multiple") {
+        console.log(action.payload);
+        newInvoice = {
+          ...state.currentInvoice,
+          multiplePyamentList: action.payload.multiplePyamentList,
           invoiceStatus: invoiceStatus,
         };
       } else {
