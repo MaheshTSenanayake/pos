@@ -1,10 +1,11 @@
 import { Grid, IconButton, TextField, MenuItem, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { saveDraftInvoice } from "../../store/action/cartAction";
+import { useDispatch, useSelector } from "react-redux";
+import { savePayment } from "../../store/action/cartAction";
 
 const CardPayment = (props) => {
+  const state = useSelector((state) => state.currentInvoice);
   const dispatch = useDispatch();
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolderName, setCardHolderName] = useState("");
@@ -42,7 +43,7 @@ const CardPayment = (props) => {
     invoiceStatus: { status: "Complete", payMethod: "Card" },
   };
   const submitHandler = () => {
-    dispatch(saveDraftInvoice(cardDetails));
+    dispatch(savePayment(cardDetails));
     handleCardDetailsSubmit();
   };
 
@@ -71,7 +72,11 @@ const CardPayment = (props) => {
               <Grid item xs={4}>
                 <TextField
                   label="Card Number"
-                  value={cardNumber}
+                  value={
+                    state.hasOwnProperty("cardDetails")
+                      ? state.cardDetails.cardNumber
+                      : cardNumber
+                  }
                   onChange={handleCardNumberChange}
                   fullWidth
                 />
@@ -79,7 +84,11 @@ const CardPayment = (props) => {
               <Grid item xs={4}>
                 <TextField
                   label="Card holder name"
-                  value={cardHolderName}
+                  value={
+                    state.hasOwnProperty("cardDetails")
+                      ? state.cardDetails.cardHolderName
+                      : cardHolderName
+                  }
                   onChange={handleCardHolderNameChange}
                   fullWidth
                 />
@@ -87,7 +96,11 @@ const CardPayment = (props) => {
               <Grid item xs={4}>
                 <TextField
                   label="Card Transaction No."
-                  value={cardTransactionNo}
+                  value={
+                    state.hasOwnProperty("cardDetails")
+                      ? state.cardDetails.cardTransactionNo
+                      : cardTransactionNo
+                  }
                   onChange={handleCardTransactionNoChange}
                   fullWidth
                 />
@@ -96,7 +109,11 @@ const CardPayment = (props) => {
                 <TextField
                   select
                   label="Card Type"
-                  value={cardType}
+                  value={
+                    state.hasOwnProperty("cardDetails")
+                      ? state.cardDetails.cardType
+                      : cardType
+                  }
                   onChange={handleCardTypeChange}
                   fullWidth
                 >
@@ -108,7 +125,11 @@ const CardPayment = (props) => {
               <Grid item xs={6} md={3}>
                 <TextField
                   label="Month"
-                  value={expiryMonth}
+                  value={
+                    state.hasOwnProperty("cardDetails")
+                      ? state.cardDetails.expiryMonth
+                      : expiryMonth
+                  }
                   onChange={handleExpiryMonthChange}
                   fullWidth
                 />
@@ -116,7 +137,11 @@ const CardPayment = (props) => {
               <Grid item xs={6} md={3}>
                 <TextField
                   label="Year"
-                  value={expiryYear}
+                  value={
+                    state.hasOwnProperty("cardDetails")
+                      ? state.cardDetails.expiryYear
+                      : expiryYear
+                  }
                   onChange={handleExpiryYearChange}
                   fullWidth
                 />

@@ -1,8 +1,10 @@
-import { Grid, TextField, MenuItem } from "@mui/material";
+import { Grid, TextField, MenuItem, Button } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-const MultiplePayByCard = () => {
+const MultiplePayByCard = (props) => {
   const [cardDetails, setCardDetails] = useState({});
+  const state = useSelector((state) => state.currentInvoice);
 
   const handleCardNumberChange = (e) => {
     const number = e.target.value;
@@ -29,6 +31,15 @@ const MultiplePayByCard = () => {
     setCardDetails({ ...cardDetails, expiryYear: exYear });
   };
 
+  const saveAdvancePaymetData = () => {
+    const sendingCardData = {
+      ...cardDetails,
+      methodDetails: cardDetails,
+      methodListKey: props.methodKey,
+    };
+    props.sendAdvanceData(sendingCardData);
+  };
+
   return (
     <div>
       <Grid container justifyContent="center" spacing={2}>
@@ -47,6 +58,13 @@ const MultiplePayByCard = () => {
                   label="Card Number"
                   onChange={handleCardNumberChange}
                   fullWidth
+                  value={
+                    state.hasOwnProperty("multiplePyamentList") &&
+                    props.methodKey < state.multiplePyamentList.length
+                      ? state.multiplePyamentList[props.methodKey].methodDetails
+                          .cardNumber
+                      : cardDetails.cardNumber
+                  }
                 />
               </Grid>
               <Grid item xs={4}>
@@ -54,6 +72,13 @@ const MultiplePayByCard = () => {
                   label="Card holder name"
                   onChange={handleCardHolderNameChange}
                   fullWidth
+                  value={
+                    state.hasOwnProperty("multiplePyamentList") &&
+                    props.methodKey < state.multiplePyamentList.length
+                      ? state.multiplePyamentList[props.methodKey].methodDetails
+                          .cardHolderName
+                      : cardDetails.cardHolderName
+                  }
                 />
               </Grid>
               <Grid item xs={4}>
@@ -61,6 +86,13 @@ const MultiplePayByCard = () => {
                   label="Card Transaction No."
                   onChange={handleCardTransactionNoChange}
                   fullWidth
+                  value={
+                    state.hasOwnProperty("multiplePyamentList") &&
+                    props.methodKey < state.multiplePyamentList.length
+                      ? state.multiplePyamentList[props.methodKey].methodDetails
+                          .cardTransactionNo
+                      : cardDetails.cardTransactionNo
+                  }
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -69,6 +101,13 @@ const MultiplePayByCard = () => {
                   label="Card Type"
                   onChange={handleCardTypeChange}
                   fullWidth
+                  value={
+                    state.hasOwnProperty("multiplePyamentList") &&
+                    props.methodKey < state.multiplePyamentList.length
+                      ? state.multiplePyamentList[props.methodKey].methodDetails
+                          .cardType
+                      : cardDetails.cardType
+                  }
                 >
                   <MenuItem value="Visa">Visa</MenuItem>
                   <MenuItem value="Mastercard">Mastercard</MenuItem>
@@ -80,6 +119,13 @@ const MultiplePayByCard = () => {
                   label="Month"
                   onChange={handleExpiryMonthChange}
                   fullWidth
+                  value={
+                    state.hasOwnProperty("multiplePyamentList") &&
+                    props.methodKey < state.multiplePyamentList.length
+                      ? state.multiplePyamentList[props.methodKey].methodDetails
+                          .expiryMonth
+                      : cardDetails.expiryMonth
+                  }
                 />
               </Grid>
               <Grid item xs={6} md={3}>
@@ -87,10 +133,31 @@ const MultiplePayByCard = () => {
                   label="Year"
                   onChange={handleExpiryYearChange}
                   fullWidth
+                  value={
+                    state.hasOwnProperty("multiplePyamentList") &&
+                    props.methodKey < state.multiplePyamentList.length
+                      ? state.multiplePyamentList[props.methodKey].methodDetails
+                          .expiryYear
+                      : cardDetails.expiryYear
+                  }
                 />
               </Grid>
             </Grid>
           </div>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            sx={{
+              textAlign: "center",
+              bgcolor: "#05abeb",
+              borderRadius: 1,
+              margin: 1,
+            }}
+            variant="contained"
+            onClick={saveAdvancePaymetData}
+          >
+            Save Card Details
+          </Button>
         </Grid>
       </Grid>
     </div>

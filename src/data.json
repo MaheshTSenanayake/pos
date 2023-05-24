@@ -72,7 +72,7 @@
     {
       "_id": "i7",
       "title": "Apple1",
-      "price": 50,
+      "price": { "lkr": 300, "usd": 1 },
       "category": "Fruit",
       "image": "./image/image.jpeg",
       "sereal": "7",

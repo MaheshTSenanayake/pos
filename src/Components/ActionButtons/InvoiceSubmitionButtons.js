@@ -6,12 +6,14 @@ import { useDispatch } from "react-redux";
 import { saveDraftInvoice } from "../../store/action/cartAction";
 import Invoice from "../Layout/print/Invoice";
 import CardPayment from "../PamentMethods/CardPayment";
+import CashPayment from "../PamentMethods/CashPayment";
 import MultiplePay from "../PamentMethods/MultiplePay";
 
 const InvoiceSubmitionBuutons = () => {
   const [pdfView, setPdfView] = useState(false);
   const [cardPay, setCardPay] = useState(false);
   const [multiplePay, setMultiplePay] = useState(false);
+  const [cashPay, setCashPay] = useState(false);
   const dispatch = useDispatch();
 
   const handlePdfClose = () => {
@@ -25,10 +27,9 @@ const InvoiceSubmitionBuutons = () => {
     dispatch(saveDraftInvoice(invoiceDetails));
   };
   const saveInvoiceHandler = () => {
-    const invoiceDetails = {
-      invoiceStatus: { status: "Draft", payMethod: "Credit" },
-    };
-    dispatch(saveDraftInvoice(invoiceDetails));
+    dispatch(
+      saveDraftInvoice({ invoiceStatus: { status: "Draft", payMethod: "" } })
+    );
   };
   const printBill = () => {
     const invoiceDetails = {
@@ -45,11 +46,17 @@ const InvoiceSubmitionBuutons = () => {
     // Close the modal
     setCardPay(false);
   };
+  const handleCashDetailsSubmit = () => {
+    setCashPay(false);
+  };
   const handleMultiplePayDetailsSubmit = () => {
     setMultiplePay(false);
   };
   const multiplePayHandler = () => {
     setMultiplePay(true);
+  };
+  const cashPayHandler = () => {
+    setCashPay(true);
   };
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -75,7 +82,7 @@ const InvoiceSubmitionBuutons = () => {
               variant="contained"
               onClick={() => printBill()}
             >
-              Pay
+              Quatation
             </Button>
             <Button
               sx={{
@@ -89,6 +96,19 @@ const InvoiceSubmitionBuutons = () => {
               onClick={cardPayHandler}
             >
               Card
+            </Button>
+            <Button
+              sx={{
+                textAlign: "center",
+                bgcolor: "#7ccb41",
+                borderRadius: 1,
+                margin: 1,
+                width: { xs: 150 },
+              }}
+              variant="contained"
+              onClick={cashPayHandler}
+            >
+              Cash
             </Button>
             <Button
               sx={{
@@ -147,7 +167,7 @@ const InvoiceSubmitionBuutons = () => {
         </Modal>
       }
       {
-        //Modle that open for Enter card details
+        //Modle that open for Enter card details for card payment
         <Modal open={cardPay}>
           <div
             style={{
@@ -162,7 +182,22 @@ const InvoiceSubmitionBuutons = () => {
         </Modal>
       }
       {
-        //Modle that open for Multiple Pay methods
+        //Modle that open for Enter card details for card payment
+        <Modal open={cashPay}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+            }}
+          >
+            <CashPayment handleCashDetailsSubmit={handleCashDetailsSubmit} />
+          </div>
+        </Modal>
+      }
+      {
+        //Modle that open for cash Pay methods
         <Modal open={multiplePay}>
           <div
             style={{

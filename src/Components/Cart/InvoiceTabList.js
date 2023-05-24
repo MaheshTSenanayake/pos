@@ -23,7 +23,7 @@ const InvoiceTabList = () => {
   };
 
   return (
-    <Grid container alignItems="center" justifyContent="center" bgcolor={"#ffffff"}>
+    <Grid container alignItems="center" justifyContent="center" bgcolor={"#ffffff"} marginTop={"5px"}>
       <Grid item xs={12} md={8}>
         <Tabs
           value={activeTab}
@@ -37,8 +37,9 @@ const InvoiceTabList = () => {
           ))}
         </Tabs>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={4} sx={{padding:"5px"}}>
         <TextField
+        
           onKeyDown={handleSearchInvoice}
           size="small"
           placeholder="Enter Invoice ID"
