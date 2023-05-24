@@ -1,8 +1,10 @@
 import { Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const MultiplePayByBankTransfer = (props) => {
   const [bankTransferData, setBankTransferData] = useState({});
+  const state = useSelector((state) => state.currentInvoice);
   const saveAdvancePaymetData = () => {
     props.sendAdvanceData(bankTransferData);
   };
@@ -31,6 +33,13 @@ const MultiplePayByBankTransfer = (props) => {
           variant="outlined"
           label="Bank Account Number"
           fullWidth
+          value={
+            state.hasOwnProperty("multiplePyamentList") &&
+            props.methodKey < state.multiplePyamentList.length
+              ? state.multiplePyamentList[props.methodKey].methodDetails
+                  .accountNumber
+              : bankTransferData.accountNumber
+          }
         />
       </Grid>
       <Grid item xs={10} marginTop="10px">
@@ -41,6 +50,13 @@ const MultiplePayByBankTransfer = (props) => {
           variant="outlined"
           label="Payment Note"
           fullWidth
+          value={
+            state.hasOwnProperty("multiplePyamentList") &&
+            props.methodKey < state.multiplePyamentList.length
+              ? state.multiplePyamentList[props.methodKey].methodDetails
+                  .paymentNote
+              : bankTransferData.paymentNote
+          }
         />
         <Button
           sx={{

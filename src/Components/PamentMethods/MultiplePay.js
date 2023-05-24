@@ -1,4 +1,13 @@
-import { Button, Grid, IconButton, MenuItem, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MultiplePayByCheque from "./MultiplePayByCheque";
 import React, { useState } from "react";
@@ -6,12 +15,17 @@ import MultiplePayByAdvance from "./MultiplePayByAdvance";
 import MultiplePayByCash from "./MultiplePayByCash";
 import MultiplePayByCard from "./MultiplePayByCard";
 import MultiplePayByBankTransfer from "./MultiplePayByBankTransfer";
-import { useDispatch } from "react-redux";
-import { saveDraftInvoice } from "../../store/action/cartAction";
+import { useDispatch, useSelector } from "react-redux";
+import { saveDraftInvoice, savePayment } from "../../store/action/cartAction";
 
 const MultiplePay = (props) => {
+  const state = useSelector((state) => state);
   const { handleMultiplePayDetailsSubmit } = props;
-  const [multiplePyamentList, setMultiplePyamentList] = useState([]);
+  const [multiplePyamentList, setMultiplePyamentList] = useState(
+    state.currentInvoice.hasOwnProperty("multiplePyamentList")
+      ? state.currentInvoice.multiplePyamentList
+      : []
+  );
   const dispatch = useDispatch();
 
   const handlePaymentMethodChange = (index, value) => {
@@ -41,6 +55,11 @@ const MultiplePay = (props) => {
     const updatedPaymentList = [...multiplePyamentList];
     updatedPaymentList.splice(index, 1);
     setMultiplePyamentList(updatedPaymentList);
+    const paymentDetails = {
+      multiplePyamentList: updatedPaymentList,
+      invoiceStatus: { status: "Complete", payMethod: "Multiple" },
+    };
+    dispatch(savePayment(paymentDetails));
   };
   const methodDetailsSavingHandler = (data) => {
     const selectedObject = multiplePyamentList[data.methodListKey];
@@ -49,7 +68,7 @@ const MultiplePay = (props) => {
       multiplePyamentList: multiplePyamentList,
       invoiceStatus: { status: "Complete", payMethod: "Multiple" },
     };
-    dispatch(saveDraftInvoice(paymentDetails));
+    dispatch(savePayment(paymentDetails));
   };
   return (
     <div
@@ -60,7 +79,13 @@ const MultiplePay = (props) => {
         overflow: "auto",
       }}
     >
-      <Grid container justifyContent="center" spacing={2} bgcolor="#ffffff">
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        bgcolor="#ffffff"
+        sx={{ padding: "10px" }}
+      >
         <Grid container item xs={12} direction="row" alignItems="center">
           <Grid item xs={10} paddingLeft="50px">
             <h1>Multiple Payment</h1>
@@ -158,11 +183,104 @@ const MultiplePay = (props) => {
                 >
                   Add Pay Method
                 </Button>
+                <Button
+                  sx={{
+                    textAlign: "center",
+                    bgcolor: "#05abeb",
+                    borderRadius: 1,
+                    margin: 1,
+                  }}
+                  variant="contained"
+                  onClick={() =>
+                    dispatch(
+                      saveDraftInvoice({
+                        invoiceStatus: {
+                          status: "Complete",
+                          payMethod: "Multiple",
+                        },
+                      })
+                    )
+                  }
+                >
+                  Finalize
+                </Button>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={3}>
-            Total
+            <Box
+              sx={{
+                backgroundColor: "#04FFF6",
+                borderRadius: "10px",
+                position: "sticky",
+                top: "50px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100px",
+                  justifyContent: "center",
+                }}
+                color={"white"}
+              >
+                <Typography variant="subtitle1">
+                  <strong>Total Payable:</strong>
+                </Typography>
+                <Typography variant="h5">
+                  {state.currency + ": "}
+                  {state.currency === "LKR"
+                    ? state.currentInvoice.total.lkr
+                    : state.currentInvoice.total.usd}
+                </Typography>
+              </Box>
+
+              <Divider />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100px",
+                  justifyContent: "center",
+                }}
+                color={"white"}
+              >
+                <Typography variant="subtitle1">
+                  <strong>Total Paying:</strong>
+                </Typography>
+                <Typography variant="h5">
+                  {state.currency + ": "}
+                  {state.currentInvoice.recieveAmount}
+                </Typography>
+                <input type="hidden" id="total_paying_input" value="8.00" />
+              </Box>
+
+              <Divider />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100px",
+                  justifyContent: "center",
+                }}
+                color={"white"}
+              >
+                <Typography variant="subtitle1">
+                  <strong>Balance:</strong>
+                </Typography>
+                <Typography variant="h5">
+                  {state.currency + ": "}
+                  {state.currentInvoice.balance}
+                </Typography>
+                <input type="hidden" id="in_balance_due" value="0.00" />
+              </Box>
+            </Box>
           </Grid>
         </Grid>
       </Grid>
